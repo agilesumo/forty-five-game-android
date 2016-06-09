@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.agilesumo.fortyfive.GameActivity">
+
+    <LinearLayout
+        android:id="@+id/layout_cards_computer1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center" >
+
+        <ImageView
+
+            android:id="@+id/first_card_computer1"
+            android:layout_width="50dp"
+            android:layout_height="72dp"
+            android:layout_marginRight="5dp"
+            android:onClick="comCardClicked"
+
+            />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="72dp"
+            android:id="@+id/second_card_computer1"
+            android:layout_marginRight="5dp"
+            android:onClick="comCardClicked"
+
+
+
+            />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="72dp"
+            android:id="@+id/third_card_computer1"
+            android:layout_marginRight="5dp"
+            android:onClick="comCardClicked"
+
+
+            />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="72dp"
+            android:id="@+id/fourth_card_computer1"
+            android:layout_marginRight="5dp"
+            android:onClick="comCardClicked"
+
+
+            />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="72dp"
+            android:id="@+id/fifth_card_computer1"
+            android:onClick="comCardClicked"
+
+
+
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/layout_cards_computer1">
+
+        <TextView
+            android:id="@+id/computer1_score_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="Score:"
+            android:paddingLeft="@dimen/activity_horizontal_margin"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_centerInParent="true">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            >
+
+            <TextView
+                android:id="@+id/turmp_card_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:text="Trumps"
+                />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="72dp"
+                android:id="@+id/up_trump_card"
+            />
+
+
+
+        </LinearLayout>
+
+        <ImageView
+
+            android:id="@+id/first_card_played"
+            android:layout_width="50dp"
+            android:layout_height="72dp"
+            android:layout_marginRight="5dp"
+
+            />
+
+        <ImageView
+
+            android:id="@+id/second_card_played"
+            android:layout_width="50dp"
+            android:layout_height="72dp"
+            android:layout_marginRight="5dp"
+
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_above="@+id/layout_cards_player">
+
+        <TextView
+            android:id="@+id/player_score_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="Score:"
+            android:paddingLeft="@dimen/activity_horizontal_margin"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_cards_player"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:gravity="center" >
+
+        <ImageView
+
+            android:id="@+id/first_card_player"
+            android:layout_width="50dp"
+            android:layout_height="72dp"
+            android:layout_marginRight="5dp"
+            android:onClick="playerCardClicked"
+
+            />
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="72dp"
+            android:id="@+id/second_card_player"
+            android:layout_marginRight="5dp"
+            android:onClick="playerCardClicked"
+            />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="72dp"
+            android:id="@+id/third_card_player"
+            android:layout_marginRight="5dp"
+            android:onClick="playerCardClicked"
+
+            />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="72dp"
+            android:id="@+id/fourth_card_player"
+            android:layout_marginRight="5dp"
+            android:onClick="playerCardClicked"
+
+            />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="72dp"
+            android:id="@+id/fifth_card_player"
+            android:onClick="playerCardClicked"
+
+            />
+
+
+    </LinearLayout>
+
+</RelativeLayout>
