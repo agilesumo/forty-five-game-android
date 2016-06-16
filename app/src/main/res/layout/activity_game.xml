@@ -68,6 +68,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/layout_score_com1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -83,6 +84,85 @@
             android:paddingLeft="@dimen/activity_horizontal_margin"/>
 
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_cards_computer2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_below="@+id/layout_score_com1">
+
+        <ImageView
+
+            android:id="@+id/first_card_computer2"
+            android:layout_width="50dp"
+            android:layout_height="72dp"
+            android:layout_marginRight="5dp"
+            android:onClick="com2CardClicked"
+
+            />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="72dp"
+            android:id="@+id/second_card_computer2"
+            android:layout_marginRight="5dp"
+            android:onClick="com2CardClicked"
+
+
+
+            />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="72dp"
+            android:id="@+id/third_card_computer2"
+            android:layout_marginRight="5dp"
+            android:onClick="com2CardClicked"
+
+
+            />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="72dp"
+            android:id="@+id/fourth_card_computer2"
+            android:layout_marginRight="5dp"
+            android:onClick="com2CardClicked"
+
+
+            />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="72dp"
+            android:id="@+id/fifth_card_computer2"
+            android:onClick="com2CardClicked"
+
+
+
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/layout_cards_computer2">
+
+        <TextView
+            android:id="@+id/computer2_score_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="Score:"
+            android:paddingLeft="@dimen/activity_horizontal_margin"/>
+
+    </LinearLayout>
+
 
 
     <LinearLayout
@@ -136,6 +216,16 @@
             android:layout_marginRight="5dp"
 
             />
+
+        <ImageView
+
+            android:id="@+id/third_card_played"
+            android:layout_width="50dp"
+            android:layout_height="72dp"
+            android:layout_marginRight="5dp"
+
+            />
+
 
     </LinearLayout>
 
