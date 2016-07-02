@@ -1,5 +1,7 @@
 package com.agilesumo.fortyfive;
 
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +11,9 @@ import android.widget.ImageView;
 import android.os.Handler;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.app.AlertDialog;
+
+import java.util.Arrays;
 
 
 public class GameActivity extends AppCompatActivity {
@@ -82,11 +87,16 @@ public class GameActivity extends AppCompatActivity {
 
     private ImageView thirdCardPlayedImage;
 
+    private ImageView aceTrumpsImage;
+
+
     private boolean firstCardNext = true;
 
     private boolean secondCardNext = false;
 
     private boolean thirdCardNext = false;
+
+    private boolean aceTrumpsToBeUpdated = false;
 
     private Card upTrumpCard;
 
@@ -98,6 +108,8 @@ public class GameActivity extends AppCompatActivity {
 
     private TextView scoreTextCom2;
 
+    private Player leadingPlayer;
+
 
 
 
@@ -108,6 +120,7 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        //http://stackoverflow.com/questions/23289168/reassigning-objects-in-java-with-new
         currentHand = new Hand();
 
         Card[] playersCards = currentHand.getPlayersCards();
@@ -197,236 +210,133 @@ public class GameActivity extends AppCompatActivity {
         scoreTextCom1 = (TextView) findViewById(R.id.computer1_score_text);
         scoreTextCom2 = (TextView) findViewById(R.id.computer2_score_text);
 
+        if(currentHand.hasAceTrumps()){
+            Player aceTrumpsPlayer = currentHand.getAceTrumpsPlayer();
+            String hasAceOutput = "";
+            if((Hand.player).equals(aceTrumpsPlayer)){
+                hasAceOutput += "You have the ace of trumps";
 
+            }
 
+            else if((Hand.computer1).equals(aceTrumpsPlayer)){
+                hasAceOutput += "Computer P1 has ace of trumps";
+            }
+
+            else{
+                hasAceOutput += "ComputerP2 has ace of trumps";
+            }
+
+            hasAceOutput += ". Choose a card to discard to claim the turned up trump card.";
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(hasAceOutput)
+                    .setCancelable(false)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                        }
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
+
+            int aceTrumpsIndex = currentHand.getAceOfTrumpsPosition();
+            if(aceTrumpsPlayer.equals(Hand.player)){
+
+                aceTrumpsToBeUpdated = true;
+                if(aceTrumpsIndex == 0){
+                    firstCardPlayerImage.setClickable(false);
+                    firstCardPlayerImage.setColorFilter(Color.rgb(123, 123, 123),
+                            android.graphics.PorterDuff.Mode.MULTIPLY);
+                    aceTrumpsImage = firstCardPlayerImage;
+
+                }
+                else if(aceTrumpsIndex == 1){
+                    secondCardPlayerImage.setClickable(false);
+                    secondCardPlayerImage.setColorFilter(Color.rgb(123, 123, 123),
+                            android.graphics.PorterDuff.Mode.MULTIPLY);
+                    aceTrumpsImage = secondCardPlayerImage;
+
+                }
+                else if(aceTrumpsIndex == 2){
+                    thirdCardPlayerImage.setClickable(false);
+                    thirdCardPlayerImage.setColorFilter(Color.rgb(123, 123, 123),
+                            android.graphics.PorterDuff.Mode.MULTIPLY);
+                    aceTrumpsImage = thirdCardPlayerImage;
+
+                }
+                else if(aceTrumpsIndex ==3){
+                    fourthCardPlayerImage.setClickable(false);
+                    fourthCardPlayerImage.setColorFilter(Color.rgb(123, 123, 123),
+                            android.graphics.PorterDuff.Mode.MULTIPLY);
+                    aceTrumpsImage = fourthCardPlayerImage;
+
+                }
+                else if(aceTrumpsIndex ==4){
+                    fifthCardPlayerImage.setClickable(false);
+                    fifthCardPlayerImage.setColorFilter(Color.rgb(123, 123, 123),
+                            android.graphics.PorterDuff.Mode.MULTIPLY);
+                    aceTrumpsImage = fifthCardPlayerImage;
+
+                }
+
+            }
+
+        }
+
+        leadingPlayer = Hand.player;
 
     }
-
-    public void comCardClicked(View view){
-        if (firstCardNext) {
-            switch (view.getId()) {
-                case R.id.first_card_computer1:
-                    firstCardCom1Image.setVisibility(View.INVISIBLE);
-                    firstCardPlayedImage.setImageResource(firstCardCom1.getCardImageId());
-                    currentHand.setFirstPlayed(firstCardCom1, Hand.computer1);
-                    break;
-                case R.id.second_card_computer1:
-                    secondCardCom1Image.setVisibility(View.INVISIBLE);
-                    firstCardPlayedImage.setImageResource(secondCardCom1.getCardImageId());
-                    currentHand.setFirstPlayed(secondCardCom1, Hand.computer1);
-                    break;
-                case R.id.third_card_computer1:
-                    thirdCardCom1Image.setVisibility(View.INVISIBLE);
-                    firstCardPlayedImage.setImageResource(thirdCardCom1.getCardImageId());
-                    currentHand.setFirstPlayed(thirdCardCom1, Hand.computer1);
-                    break;
-                case R.id.fourth_card_computer1:
-                    fourthCardCom1Image.setVisibility(View.INVISIBLE);
-                    firstCardPlayedImage.setImageResource(fourthCardCom1.getCardImageId());
-                    currentHand.setFirstPlayed(fourthCardCom1, Hand.computer1);
-                    break;
-                case R.id.fifth_card_computer1:
-                    fifthCardCom1Image.setVisibility(View.INVISIBLE);
-                    firstCardPlayedImage.setImageResource(fifthCardCom1.getCardImageId());
-                    currentHand.setFirstPlayed(fifthCardCom1,Hand.computer1);
-                    break;
-            }
-
-            firstCardNext = false;
-            secondCardNext = true;
-            thirdCardNext = false;
-            return;
-
-
-        }
-
-
-        else if (secondCardNext) {
-            switch (view.getId()) {
-                case R.id.first_card_computer1:
-                    firstCardCom1Image.setVisibility(View.INVISIBLE);
-                    secondCardPlayedImage.setImageResource(firstCardCom1.getCardImageId());
-                    currentHand.setSecondPlayed(firstCardCom1, Hand.computer1);
-                    break;
-                case R.id.second_card_computer1:
-                    secondCardCom1Image.setVisibility(View.INVISIBLE);
-                    secondCardPlayedImage.setImageResource(secondCardCom1.getCardImageId());
-                    currentHand.setSecondPlayed(secondCardCom1, Hand.computer1);
-                    break;
-                case R.id.third_card_computer1:
-                    thirdCardCom1Image.setVisibility(View.INVISIBLE);
-                    secondCardPlayedImage.setImageResource(thirdCardCom1.getCardImageId());
-                    currentHand.setSecondPlayed(thirdCardCom1, Hand.computer1);
-                    break;
-                case R.id.fourth_card_computer1:
-                    fourthCardCom1Image.setVisibility(View.INVISIBLE);
-                    secondCardPlayedImage.setImageResource(fourthCardCom1.getCardImageId());
-                    currentHand.setSecondPlayed(fourthCardCom1, Hand.computer1);
-                    break;
-                case R.id.fifth_card_computer1:
-                    fifthCardCom1Image.setVisibility(View.INVISIBLE);
-                    secondCardPlayedImage.setImageResource(fifthCardCom1.getCardImageId());
-                    currentHand.setSecondPlayed(fifthCardCom1, Hand.computer1);
-                    break;
-            }
-            firstCardNext = false;
-            secondCardNext = false;
-            thirdCardNext = true;
-            return;
-
-
-        }
-
-        else if (thirdCardNext) {
-            switch (view.getId()) {
-                case R.id.first_card_computer1:
-                    firstCardCom1Image.setVisibility(View.INVISIBLE);
-                    thirdCardPlayedImage.setImageResource(firstCardCom1.getCardImageId());
-                    currentHand.setThirdPlayed(firstCardCom1, Hand.computer1);
-                    break;
-                case R.id.second_card_computer1:
-                    secondCardCom1Image.setVisibility(View.INVISIBLE);
-                    thirdCardPlayedImage.setImageResource(secondCardCom1.getCardImageId());
-                    currentHand.setThirdPlayed(secondCardCom1, Hand.computer1);
-                    break;
-                case R.id.third_card_computer1:
-                    thirdCardCom1Image.setVisibility(View.INVISIBLE);
-                    thirdCardPlayedImage.setImageResource(thirdCardCom1.getCardImageId());
-                    currentHand.setThirdPlayed(thirdCardCom1, Hand.computer1);
-                    break;
-                case R.id.fourth_card_computer1:
-                    fourthCardCom1Image.setVisibility(View.INVISIBLE);
-                    thirdCardPlayedImage.setImageResource(fourthCardCom1.getCardImageId());
-                    currentHand.setThirdPlayed(fourthCardCom1, Hand.computer1);
-                    break;
-                case R.id.fifth_card_computer1:
-                    fifthCardCom1Image.setVisibility(View.INVISIBLE);
-                    thirdCardPlayedImage.setImageResource(fifthCardCom1.getCardImageId());
-                    currentHand.setThirdPlayed(fifthCardCom1, Hand.computer1);
-                    break;
-            }
-            firstCardNext = true;
-            secondCardNext = false;
-            thirdCardNext = false;
-
-            trickFinishedUpdate();
-
-
-
-        }
-
-    }
-
-    public void com2CardClicked(View view) {
-        if (firstCardNext) {
-            switch (view.getId()) {
-                case R.id.first_card_computer2:
-                    firstCardCom2Image.setVisibility(View.INVISIBLE);
-                    firstCardPlayedImage.setImageResource(firstCardCom2.getCardImageId());
-                    currentHand.setFirstPlayed(firstCardCom2, Hand.computer2);
-                    break;
-                case R.id.second_card_computer2:
-                    secondCardCom2Image.setVisibility(View.INVISIBLE);
-                    firstCardPlayedImage.setImageResource(secondCardCom2.getCardImageId());
-                    currentHand.setFirstPlayed(secondCardCom2, Hand.computer2);
-                    break;
-                case R.id.third_card_computer2:
-                    thirdCardCom2Image.setVisibility(View.INVISIBLE);
-                    firstCardPlayedImage.setImageResource(thirdCardCom2.getCardImageId());
-                    currentHand.setFirstPlayed(thirdCardCom2, Hand.computer2);
-                    break;
-                case R.id.fourth_card_computer2:
-                    fourthCardCom2Image.setVisibility(View.INVISIBLE);
-                    firstCardPlayedImage.setImageResource(fourthCardCom2.getCardImageId());
-                    currentHand.setFirstPlayed(fourthCardCom2, Hand.computer2);
-                    break;
-                case R.id.fifth_card_computer2:
-                    fifthCardCom2Image.setVisibility(View.INVISIBLE);
-                    firstCardPlayedImage.setImageResource(fifthCardCom2.getCardImageId());
-                    currentHand.setFirstPlayed(fifthCardCom2, Hand.computer2);
-                    break;
-            }
-            firstCardNext = false;
-            secondCardNext = true;
-            thirdCardNext = false;
-            return;
-
-        } else if (secondCardNext) {
-            switch (view.getId()) {
-                case R.id.first_card_computer2:
-                    firstCardCom2Image.setVisibility(View.INVISIBLE);
-                    secondCardPlayedImage.setImageResource(firstCardCom2.getCardImageId());
-                    currentHand.setSecondPlayed(firstCardCom2, Hand.computer2);
-                    break;
-                case R.id.second_card_computer2:
-                    secondCardCom2Image.setVisibility(View.INVISIBLE);
-                    secondCardPlayedImage.setImageResource(secondCardCom2.getCardImageId());
-                    currentHand.setSecondPlayed(secondCardCom2, Hand.computer2);
-                    break;
-                case R.id.third_card_computer2:
-                    thirdCardCom2Image.setVisibility(View.INVISIBLE);
-                    secondCardPlayedImage.setImageResource(thirdCardCom2.getCardImageId());
-                    currentHand.setSecondPlayed(thirdCardCom2, Hand.computer2);
-                    break;
-                case R.id.fourth_card_computer2:
-                    fourthCardCom2Image.setVisibility(View.INVISIBLE);
-                    secondCardPlayedImage.setImageResource(fourthCardCom2.getCardImageId());
-                    currentHand.setSecondPlayed(fourthCardCom2, Hand.computer2);
-                    break;
-                case R.id.fifth_card_computer2:
-                    fifthCardCom2Image.setVisibility(View.INVISIBLE);
-                    secondCardPlayedImage.setImageResource(fifthCardCom2.getCardImageId());
-                    currentHand.setSecondPlayed(fifthCardCom2, Hand.computer2);
-                    break;
-            }
-
-            firstCardNext = false;
-            secondCardNext = false;
-            thirdCardNext = true;
-            return;
-
-        }
-
-        else if (thirdCardNext) {
-            switch (view.getId()) {
-                case R.id.first_card_computer2:
-                    firstCardCom2Image.setVisibility(View.INVISIBLE);
-                    thirdCardPlayedImage.setImageResource(firstCardCom2.getCardImageId());
-                    currentHand.setThirdPlayed(firstCardCom2, Hand.computer2);
-                    break;
-                case R.id.second_card_computer2:
-                    secondCardCom2Image.setVisibility(View.INVISIBLE);
-                    thirdCardPlayedImage.setImageResource(thirdCardCom2.getCardImageId());
-                    currentHand.setThirdPlayed(secondCardCom2, Hand.computer2);
-                    break;
-                case R.id.third_card_computer2:
-                    thirdCardCom2Image.setVisibility(View.INVISIBLE);
-                    thirdCardPlayedImage.setImageResource(thirdCardCom2.getCardImageId());
-                    currentHand.setThirdPlayed(thirdCardCom2, Hand.computer2);
-                    break;
-                case R.id.fourth_card_computer2:
-                    fourthCardCom2Image.setVisibility(View.INVISIBLE);
-                    thirdCardPlayedImage.setImageResource(fourthCardCom2.getCardImageId());
-                    currentHand.setThirdPlayed(fourthCardCom2, Hand.computer2);
-                    break;
-                case R.id.fifth_card_computer2:
-                    fifthCardCom2Image.setVisibility(View.INVISIBLE);
-                    thirdCardPlayedImage.setImageResource(fifthCardCom2.getCardImageId());
-                    currentHand.setThirdPlayed(fifthCardCom2, Hand.computer2);
-                    break;
-            }
-            firstCardNext = true;
-            secondCardNext = false;
-            thirdCardNext = false;
-            trickFinishedUpdate();
-
-        }
-
-    }
-
 
     public void playerCardClicked(View view) {
-        if (firstCardNext) {
+
+        if(aceTrumpsToBeUpdated){
+            upTrumpCardImage.setColorFilter(Color.rgb(123, 123, 123),
+                    android.graphics.PorterDuff.Mode.MULTIPLY);
+            switch (view.getId()) {
+                case R.id.first_card_player:
+                    firstCardPlayerImage.setImageResource(currentHand.getTrumpCard().getCardImageId());
+                    firstCardPlayer = currentHand.getTrumpCard();
+                    currentHand.updatePlayerCard(currentHand.getTrumpCard(),0);
+                    aceTrumpsImage.setClickable(true);
+                    aceTrumpsImage.clearColorFilter();
+                    break;
+                case R.id.second_card_player:
+                    secondCardPlayerImage.setImageResource(currentHand.getTrumpCard().getCardImageId());
+                    secondCardPlayer = currentHand.getTrumpCard();
+                    currentHand.updatePlayerCard(currentHand.getTrumpCard(),1);
+                    aceTrumpsImage.setClickable(true);
+                    aceTrumpsImage.clearColorFilter();
+                    break;
+
+                case R.id.third_card_player:
+                    thirdCardPlayerImage.setImageResource(currentHand.getTrumpCard().getCardImageId());
+                    thirdCardPlayer = currentHand.getTrumpCard();
+                    currentHand.updatePlayerCard(currentHand.getTrumpCard(),2);
+                    aceTrumpsImage.setClickable(true);
+                    aceTrumpsImage.clearColorFilter();
+                    break;
+
+                case R.id.fourth_card_player:
+                    fourthCardPlayerImage.setImageResource(currentHand.getTrumpCard().getCardImageId());
+                    fourthCardPlayer = currentHand.getTrumpCard();
+                    currentHand.updatePlayerCard(currentHand.getTrumpCard(),3);
+                    aceTrumpsImage.setClickable(true);
+                    aceTrumpsImage.clearColorFilter();
+                    break;
+
+                case R.id.fifth_card_player:
+                    fifthCardPlayerImage.setImageResource(currentHand.getTrumpCard().getCardImageId());
+                    fifthCardPlayer = currentHand.getTrumpCard();
+                    currentHand.updatePlayerCard(currentHand.getTrumpCard(),4);
+                    aceTrumpsImage.setClickable(true);
+                    aceTrumpsImage.clearColorFilter();
+                    break;
+
+            }
+
+            aceTrumpsToBeUpdated = false;
+        }
+
+        else if (firstCardNext) {
 
             switch (view.getId()) {
                 case R.id.first_card_player:
@@ -458,7 +368,32 @@ public class GameActivity extends AppCompatActivity {
             firstCardNext = false;
             secondCardNext = true;
             thirdCardNext = false;
-            return;
+
+            playerLedFinishTrick();
+
+
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                    if (!currentHand.isHandFinished()) {
+                        if (currentHand.getLastTrickWinner().equals(Hand.computer1)) {
+                            computer1LeadTrick();
+                        } else if (currentHand.getLastTrickWinner().equals(Hand.computer2)) {
+                            computer2LeadTrick();
+                        }
+                    }
+
+
+                    return;
+
+
+                }
+            }, 2100);
+
+
+
         }
         else if (secondCardNext) {
             switch (view.getId()) {
@@ -492,7 +427,29 @@ public class GameActivity extends AppCompatActivity {
             firstCardNext = false;
             secondCardNext = false;
             thirdCardNext = true;
-            return;
+
+            computer1FinishTrick();
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                    if(!currentHand.isHandFinished()){
+                        if(currentHand.getLastTrickWinner().equals(Hand.computer1)){
+                            computer1LeadTrick();
+                        }
+                        else if(currentHand.getLastTrickWinner().equals(Hand.computer2)){
+                            computer2LeadTrick();
+                        }
+                    }
+                    return;
+
+
+                }
+            }, 2100);                   // Do something after 5s = 5000ms
+
+
+
         }
 
         else if (thirdCardNext) {
@@ -528,6 +485,21 @@ public class GameActivity extends AppCompatActivity {
             thirdCardNext = false;
             trickFinishedUpdate();
 
+            if(!currentHand.isHandFinished()){
+                if(currentHand.getLastTrickWinner().equals(Hand.computer1)){
+                    computer1LeadTrick();
+
+                }
+                else if(currentHand.getLastTrickWinner().equals(Hand.computer2)){
+                    computer2LeadTrick();
+
+                }
+
+            }
+
+
+            return;
+
         }
 
     }
@@ -542,11 +514,12 @@ public class GameActivity extends AppCompatActivity {
         thirdCardNext = false;
 
         currentHand.updateScore();
+
         scoreTextPlayer.setText("Score: " + currentHand.getScore(Hand.player));
         scoreTextCom1.setText("Score: " + currentHand.getScore(Hand.computer1));
         scoreTextCom2.setText("Score: " + currentHand.getScore(Hand.computer2));
 
-        // Add a time delay of 2 seconds before displaying result
+        // Add a time delay of 3 seconds before displaying result
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -555,7 +528,7 @@ public class GameActivity extends AppCompatActivity {
                 secondCardPlayedImage.setImageDrawable(null);
                 thirdCardPlayedImage.setImageDrawable(null);
 
-
+/*
                 if (currentHand.isHandFinished()) {
                     Log.d("andyoc", "got hand finished");
 
@@ -569,10 +542,302 @@ public class GameActivity extends AppCompatActivity {
 
 
                 }
+                */
+
             }
-        }, 2500);                   // Do something after 5s = 5000ms
+        }, 3000);                   // Do something after 5s = 5000ms
 
 
 
     }
+
+
+
+    private void playerLedFinishTrick(){
+
+        final Handler handler = new Handler();
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Card secondPlayed = currentHand.playSecondCard(Hand.computer1);
+                currentHand.setSecondPlayed(secondPlayed, Hand.computer1);
+                final int positionOfSecondPlayed = Arrays.asList(currentHand.getCom1Cards()).indexOf(secondPlayed);
+                // Add a time delay of 2 seconds before displaying result
+
+
+                if(positionOfSecondPlayed == 0){
+                    firstCardCom1Image.setVisibility(View.INVISIBLE);
+                    secondCardPlayedImage.setImageResource(firstCardCom1.getCardImageId());
+
+                }
+                else if(positionOfSecondPlayed == 1){
+                    secondCardCom1Image.setVisibility(View.INVISIBLE);
+                    secondCardPlayedImage.setImageResource(secondCardCom1.getCardImageId());
+
+                }
+                else if(positionOfSecondPlayed == 2){
+                    thirdCardCom1Image.setVisibility(View.INVISIBLE);
+                    secondCardPlayedImage.setImageResource(thirdCardCom1.getCardImageId());
+
+                }
+                else if(positionOfSecondPlayed == 3){
+                    fourthCardCom1Image.setVisibility(View.INVISIBLE);
+                    secondCardPlayedImage.setImageResource(fourthCardCom1.getCardImageId());
+
+                }
+                else{
+                    fifthCardCom1Image.setVisibility(View.INVISIBLE);
+                    secondCardPlayedImage.setImageResource(fifthCardCom1.getCardImageId());
+
+                }
+
+                firstCardNext = false;
+                secondCardNext = false;
+                thirdCardNext = true;
+
+
+            }
+        }, 1500);                   // Do something after 5s = 5000ms
+
+
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                Card thirdPlayed = currentHand.playThirdCard(Hand.computer2);
+                currentHand.setThirdPlayed(thirdPlayed, Hand.computer2);
+                final int positionOfThirdPlayed = Arrays.asList(currentHand.getCom2Cards()).indexOf(thirdPlayed);
+
+                if(positionOfThirdPlayed == 0){
+                    firstCardCom2Image.setVisibility(View.INVISIBLE);
+                    thirdCardPlayedImage.setImageResource(firstCardCom2.getCardImageId());
+
+                }
+                else if(positionOfThirdPlayed == 1){
+                    secondCardCom2Image.setVisibility(View.INVISIBLE);
+                    thirdCardPlayedImage.setImageResource(secondCardCom2.getCardImageId());
+
+                }
+                else if(positionOfThirdPlayed == 2){
+                    thirdCardCom2Image.setVisibility(View.INVISIBLE);
+                    thirdCardPlayedImage.setImageResource(thirdCardCom2.getCardImageId());
+
+                }
+                else if(positionOfThirdPlayed == 3){
+                    fourthCardCom2Image.setVisibility(View.INVISIBLE);
+                    thirdCardPlayedImage.setImageResource(fourthCardCom2.getCardImageId());
+
+                }
+                else{
+                    fifthCardCom2Image.setVisibility(View.INVISIBLE);
+                    thirdCardPlayedImage.setImageResource(fifthCardCom2.getCardImageId());
+
+                }
+
+                firstCardNext = true;
+                secondCardNext = false;
+                thirdCardNext = false;
+
+                trickFinishedUpdate();
+
+            }
+        }, 2000);                   // Do something after 5s = 5000ms
+
+
+
+
+
+
+    }
+
+
+
+    private void computer1LeadTrick() {
+
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                Card firstPlayed = currentHand.playFirstCard(Hand.computer1);
+                currentHand.setFirstPlayed(firstPlayed, Hand.computer1);
+                int positionOfSecondPlayed = Arrays.asList(currentHand.getCom1Cards()).indexOf(firstPlayed);
+
+                if (positionOfSecondPlayed == 0) {
+                    firstCardCom1Image.setVisibility(View.INVISIBLE);
+                    firstCardPlayedImage.setImageResource(firstCardCom1.getCardImageId());
+
+                } else if (positionOfSecondPlayed == 1) {
+                    secondCardCom1Image.setVisibility(View.INVISIBLE);
+                    firstCardPlayedImage.setImageResource(secondCardCom1.getCardImageId());
+
+                } else if (positionOfSecondPlayed == 2) {
+                    thirdCardCom1Image.setVisibility(View.INVISIBLE);
+                    firstCardPlayedImage.setImageResource(thirdCardCom1.getCardImageId());
+
+                } else if (positionOfSecondPlayed == 3) {
+                    fourthCardCom1Image.setVisibility(View.INVISIBLE);
+                    firstCardPlayedImage.setImageResource(fourthCardCom1.getCardImageId());
+
+                } else {
+                    fifthCardCom1Image.setVisibility(View.INVISIBLE);
+                    firstCardPlayedImage.setImageResource(fifthCardCom1.getCardImageId());
+
+                }
+
+                firstCardNext = false;
+                secondCardNext = true;
+                thirdCardNext = false;
+
+
+
+            }
+        }, 5500);                   // Do something after 5s = 5000ms
+
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                Card secondPlayed = currentHand.playSecondCard(Hand.computer2);
+                currentHand.setSecondPlayed(secondPlayed, Hand.computer2);
+                int positionOfSecondPlayed = Arrays.asList(currentHand.getCom2Cards()).indexOf(secondPlayed);
+
+                if (positionOfSecondPlayed == 0) {
+                    firstCardCom2Image.setVisibility(View.INVISIBLE);
+                    secondCardPlayedImage.setImageResource(firstCardCom2.getCardImageId());
+
+                } else if (positionOfSecondPlayed == 1) {
+                    secondCardCom2Image.setVisibility(View.INVISIBLE);
+                    secondCardPlayedImage.setImageResource(secondCardCom2.getCardImageId());
+
+                } else if (positionOfSecondPlayed == 2) {
+                    thirdCardCom2Image.setVisibility(View.INVISIBLE);
+                    secondCardPlayedImage.setImageResource(thirdCardCom2.getCardImageId());
+
+                } else if (positionOfSecondPlayed == 3) {
+                    fourthCardCom2Image.setVisibility(View.INVISIBLE);
+                    secondCardPlayedImage.setImageResource(fourthCardCom2.getCardImageId());
+
+                } else {
+                    fifthCardCom2Image.setVisibility(View.INVISIBLE);
+                    secondCardPlayedImage.setImageResource(fifthCardCom2.getCardImageId());
+
+                }
+
+                firstCardNext = false;
+                secondCardNext = false;
+                thirdCardNext = true;
+
+
+
+            }
+        }, 6000);                   // Do something after 5s = 5000ms
+
+
+
+
+
+    }
+
+
+    private void computer2LeadTrick(){
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                Card firstPlayed = currentHand.playFirstCard(Hand.computer2);
+                currentHand.setFirstPlayed(firstPlayed, Hand.computer2);
+                int positionOfFirstPlayed = Arrays.asList(currentHand.getCom2Cards()).indexOf(firstPlayed);
+
+                if (positionOfFirstPlayed == 0) {
+                    firstCardCom2Image.setVisibility(View.INVISIBLE);
+                    firstCardPlayedImage.setImageResource(firstCardCom2.getCardImageId());
+
+                } else if (positionOfFirstPlayed == 1) {
+                    secondCardCom2Image.setVisibility(View.INVISIBLE);
+                    firstCardPlayedImage.setImageResource(secondCardCom2.getCardImageId());
+
+                } else if (positionOfFirstPlayed == 2) {
+                    thirdCardCom2Image.setVisibility(View.INVISIBLE);
+                    firstCardPlayedImage.setImageResource(thirdCardCom2.getCardImageId());
+
+                } else if (positionOfFirstPlayed == 3) {
+                    fourthCardCom2Image.setVisibility(View.INVISIBLE);
+                    firstCardPlayedImage.setImageResource(fourthCardCom2.getCardImageId());
+
+                } else {
+                    fifthCardCom2Image.setVisibility(View.INVISIBLE);
+                    firstCardPlayedImage.setImageResource(fifthCardCom2.getCardImageId());
+
+                }
+
+                firstCardNext = false;
+                secondCardNext = true;
+                thirdCardNext = false;
+
+
+
+            }
+        }, 6000);                   // Do something after 5s = 5000ms
+
+    }
+
+
+    private void computer1FinishTrick(){
+
+        final Handler handler = new Handler();
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                Card thirdPlayed = currentHand.playThirdCard(Hand.computer1);
+                currentHand.setThirdPlayed(thirdPlayed, Hand.computer1);
+                int positionOfThirdPlayed = Arrays.asList(currentHand.getCom1Cards()).indexOf(thirdPlayed);
+
+                if(positionOfThirdPlayed == 0){
+                    firstCardCom1Image.setVisibility(View.INVISIBLE);
+                    thirdCardPlayedImage.setImageResource(firstCardCom1.getCardImageId());
+
+                }
+                else if(positionOfThirdPlayed == 1){
+                    secondCardCom1Image.setVisibility(View.INVISIBLE);
+                    thirdCardPlayedImage.setImageResource(secondCardCom1.getCardImageId());
+
+                }
+                else if(positionOfThirdPlayed == 2){
+                    thirdCardCom1Image.setVisibility(View.INVISIBLE);
+                    thirdCardPlayedImage.setImageResource(thirdCardCom1.getCardImageId());
+
+                }
+                else if(positionOfThirdPlayed == 3){
+                    fourthCardCom1Image.setVisibility(View.INVISIBLE);
+                    thirdCardPlayedImage.setImageResource(fourthCardCom1.getCardImageId());
+
+                }
+                else{
+                    fifthCardCom1Image.setVisibility(View.INVISIBLE);
+                    thirdCardPlayedImage.setImageResource(fifthCardCom1.getCardImageId());
+
+                }
+
+                firstCardNext = true;
+                secondCardNext = false;
+                thirdCardNext = false;
+
+                trickFinishedUpdate();
+
+
+            }
+        }, 2000);                   // Do something after 5s = 5000ms
+
+    }
+
+
 }

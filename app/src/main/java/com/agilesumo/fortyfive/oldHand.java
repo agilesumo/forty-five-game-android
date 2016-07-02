@@ -35,11 +35,15 @@ public class oldHand {
 
     private Player thirdCardPlayer;
 
+    private Player aceTrumpsPlayer = null;
+
     private int playersScore;
 
     private int com1Score;
 
     private int com2Score;
+
+    private int aceOfTrumpsPosition = -1;
 
     private ArrayList<Card> allTrumpsPlayer;
 
@@ -52,6 +56,8 @@ public class oldHand {
     public static Player computer1;
 
     public static Player computer2;
+
+
 
 
 
@@ -97,12 +103,35 @@ public class oldHand {
         com2Cards = new Card[5];
         deck.shuffle();
 
+/*
         for(int i=0; i<5; i++){
             playersCards[i] = deck.dealCard();
             com1Cards[i] = deck.dealCard();
             com2Cards[i] = deck.dealCard();
         }
+
         upTrumpCard = deck.dealCard();
+*/
+        playersCards[0] = new Card(Card.ACE,Card.DIAMONDS);
+        playersCards[1] = new Card(Card.ACE, Card.CLUBS);
+        playersCards[2] = new Card(Card.JACK, Card.HEARTS);
+        playersCards[3] = new Card(9, Card.HEARTS);
+        playersCards[4] = new Card(Card.KING, Card.HEARTS);
+
+        com1Cards[0] = new Card(2,Card.CLUBS);
+        com1Cards[1] = new Card(Card.QUEEN, Card.DIAMONDS);
+        com1Cards[2] = new Card(3, Card.HEARTS);
+        com1Cards[3] = new Card(9, Card.CLUBS);
+        com1Cards[4] = new Card(Card.KING, Card.SPADES);
+        //upTrumpCard = deck.dealCard();
+
+        com2Cards[0] = new Card(8, Card.DIAMONDS);
+        com2Cards[1] = new Card(6, Card.SPADES);
+        com2Cards[2] = new Card(Card.ACE, Card.HEARTS);
+        com2Cards[3] = new Card(7, Card.SPADES);
+        com2Cards[4] = new Card(Card.ACE, Card.SPADES);
+
+        upTrumpCard = new Card(3,Card.CLUBS);
 
 
 
@@ -119,9 +148,33 @@ public class oldHand {
         com1Score = 0;
         com2Score = 0;
 
-        allTrumpsPlayer = new ArrayList<Card>();
-        allTrumpsCom1 = new ArrayList<Card>();
-        allTrumpsCom2 = new ArrayList<Card>();
+        List<Card> allTrumpsPlayer = new ArrayList<Card>();
+        List<Card> allTrumpsCom1 = new ArrayList<Card>();
+        List<Card> allTrumpsCom2 = new ArrayList<Card>();
+
+        for(int i = 0; i < 5; i++) {
+            if(isTrump(playersCards[i])) {
+                allTrumpsPlayer.add(playersCards[i]);
+            }
+        }
+
+        for(int i = 0; i < 5; i++) {
+            if(isTrump(com1Cards[i])) {
+                allTrumpsCom1.add(com1Cards[i]);
+            }
+        }
+
+        for(int i = 0; i < 5; i++) {
+            if(isTrump(com2Cards[i])) {
+                allTrumpsCom2.add(com2Cards[i]);
+            }
+        }
+
+        //sort all trumps lists
+
+        for(int i = 1; i < allTrumpsCom1.size(); i++){
+
+        }
 
 
 
@@ -200,40 +253,167 @@ public class oldHand {
         secondCardPlayer = thePlayer;
     }
 
-    public void setThirdPlayed(Card theSecondPlayed, Player thePlayer){
-        thirdPlayed = theSecondPlayed;
+    public void setThirdPlayed(Card theThirdPlayed, Player thePlayer){
+        thirdPlayed = theThirdPlayed;
         thirdCardPlayer = thePlayer;
     }
 
+    public void updatePlayerCard(Card card, int position){
+        playersCards[position] = card;
+    }
+
+    public boolean hasAceTrumps(){
+        for(int i=0; i<5; i++){
+            if(playersCards[i].getSuit() == upTrumpCard.getSuit() &&
+                    playersCards[i].getValue() == Card.ACE){
+                aceTrumpsPlayer = player;
+                aceOfTrumpsPosition = i;
+                return true;
+            }
+
+            else if(com1Cards[i].getSuit() == upTrumpCard.getSuit() &&
+                    com1Cards[i].getValue() == Card.ACE){
+                aceTrumpsPlayer = computer1;
+                aceOfTrumpsPosition = i;
+                return true;
+            }
+
+            else if(com2Cards[i].getSuit() == upTrumpCard.getSuit() &&
+                    com2Cards[i].getValue() == Card.ACE){
+                aceTrumpsPlayer = computer2;
+                aceOfTrumpsPosition = i;
+                return true;
+            }
+
+        }
+
+        return false;
+    }
+
+    public Player getAceTrumpsPlayer(){
+        return aceTrumpsPlayer;
+    }
+
+    public int getAceOfTrumpsPosition(){
+        return aceOfTrumpsPosition;
+    }
+
+    public Card playSecondCard(Player thePlayer){
+        if( thePlayer.equals(computer1)){
+            if(isTrump(firstPlayed)){
+
+
+
+                if(!allTrumpsCom1.isEmpty()){
+                    Card cardToPlay = lowestHigherRankedTrump(computer1, firstPlayed);
+                    if(!cardToPlay.equals(null)){
+                        return cardToPlay;
+
+                    }
+                }
+            }
+
+        }
+
+        else if( thePlayer.equals(computer2)){
+            return new Card();
+        }
+        else{
+            return new Card();
+        }
+        return null;
+    }
+
     public void updateScore(){
-        if(  isTrump(firstPlayed)  && !isTrump(secondPlayed)){
+
+        if(  isTrump(firstPlayed)  && !isTrump(secondPlayed) && !isTrump(thirdPlayed)){
             updateTrickWon(firstCardPlayer);
         }
-        else
-        if( isTrump(secondPlayed)  && !isTrump(firstPlayed)){
+
+        else if( !isTrump(firstPlayed) && isTrump(secondPlayed) && !isTrump(thirdPlayed) ){
             updateTrickWon(secondCardPlayer);
         }
 
-        // to be done
-        else if( isTrump(firstPlayed) && isTrump(secondPlayed)){
+        else if(!isTrump(firstPlayed) && !isTrump(secondPlayed) && isTrump(thirdPlayed)){
+            updateTrickWon(thirdCardPlayer);
+        }
 
-            updateBothDiamondsTrumps();
-            updateBothHeartsTrumps();
-            updateBothSpadesTrumps();
-            updateBothClubsTrumps();
+        else if( isTrump(firstPlayed) && isTrump(secondPlayed) && isTrump(thirdPlayed)){
+            updateAllTrumps();
+        }
+
+        else if(isTrump(firstPlayed) && isTrump(secondPlayed)){
+
+            Card winningCard = getBetterTrump(firstPlayed, secondPlayed);
+            if(winningCard.equals(firstPlayed)){
+                updateTrickWon(firstCardPlayer);
+            }
+            else {
+                updateTrickWon(secondCardPlayer);
+            }
+        }
+
+        else if(isTrump(firstPlayed) && isTrump(thirdPlayed)){
+
+            Card winningCard = getBetterTrump(firstPlayed, thirdPlayed);
+            if(winningCard.equals(firstPlayed)){
+                updateTrickWon(firstCardPlayer);
+            }
+            else {
+                updateTrickWon((thirdCardPlayer));
+            }
 
         }
 
-        else if ( !isTrump(firstPlayed) && !isTrump(secondPlayed)&& firstPlayed.getSuit() != secondPlayed.getSuit()){
+        else if(isTrump(secondPlayed) && isTrump(thirdPlayed)){
+
+            Card winningCard = getBetterTrump(secondPlayed, thirdPlayed);
+            if(winningCard.equals(secondPlayed)){
+                updateTrickWon(secondCardPlayer);
+            }
+            else {
+                updateTrickWon(thirdCardPlayer);
+            }
+        }
+
+        else if ( firstPlayed.getSuit() != secondPlayed.getSuit() &&
+                firstPlayed.getSuit() != thirdPlayed.getSuit()){
             updateTrickWon(firstCardPlayer);
 
         }
 
-        else if( !isTrump(firstPlayed) && !isTrump(secondPlayed)){
-            updateBothSpades();
-            updateBothClubs();
-            updateBothDiamonds();
-            updateBothHearts();
+        else if (firstPlayed.getSuit() == secondPlayed.getSuit() &&
+                secondPlayed.getSuit() == thirdPlayed.getSuit()){
+            updateAllSameOffSuit();
+
+        }
+
+        else if (firstPlayed.getSuit() == secondPlayed.getSuit()){
+
+            Card winningCard = getBetterOffSuit(firstPlayed, secondPlayed);
+
+            if(winningCard.equals(firstPlayed)){
+                updateTrickWon(firstCardPlayer);
+            }
+            else {
+                updateTrickWon(secondCardPlayer);
+            }
+
+        }
+
+        else if (firstPlayed.getSuit() == thirdPlayed.getSuit()){
+
+            Card winningCard = getBetterOffSuit(firstPlayed, thirdPlayed);
+
+            if(winningCard.equals(firstPlayed)){
+                updateTrickWon(firstCardPlayer);
+            }
+
+            else{
+                updateTrickWon(thirdCardPlayer);
+            }
+
+
         }
 
     }
@@ -247,70 +427,134 @@ public class oldHand {
         else if(thePlayer.equals(computer1)){
             return com1Score;
         }
+
+        else if(thePlayer.equals(computer2)){
+            return com2Score;
+        }
+
         else {
             return 1;
         }
     }
 
     public boolean isHandFinished(){
-        return playersScore + com1Score == 25;
+        return playersScore + com1Score + com2Score == 25;
     }
 
     // to be finished
     public String getBestTrumpStr(){
-        Card bestTrump;
-        for(int i = 0; i < 5; i++) {
-            if(isTrump(playersCards[i])) {
-                allTrumpsPlayer.add(playersCards[i]);
-            }
-        }
-        for(int i = 0; i < 5; i++) {
-            if(isTrump(com1Cards[i])) {
-                allTrumpsCom1.add(com1Cards[i]);
-            }
-        }
 
-        if(allTrumpsPlayer.isEmpty() && allTrumpsCom1.isEmpty()) {
+        Card bestTrump;
+        String bestTrumpStr = "";
+
+
+        if(allTrumpsPlayer.isEmpty() && allTrumpsCom1.isEmpty() && allTrumpsCom2.isEmpty()) {
             return "No best trump as no trump in this hand";
         }
 
-        String bestTrumpStr = "";
-        if(allTrumpsCom1.isEmpty()) {
+        // only player has a trump
+        else if(allTrumpsCom1.isEmpty() && allTrumpsCom2.isEmpty()){
             bestTrump = findBestTrump(allTrumpsPlayer);
-            bestTrumpStr = "You had best Trump: ";
-            playersScore += 5;
+            bestTrumpStr = "You had the best trump: ";
+            playersScore +=5;
+
         }
 
-        else if(allTrumpsPlayer.isEmpty()){
+        // only computer1 has a trump
+        else if(allTrumpsPlayer.isEmpty() && allTrumpsCom2.isEmpty()){
             bestTrump = findBestTrump(allTrumpsCom1);
             bestTrumpStr = "Computer P1 had best trump: ";
-            com1Score +=5;
+            com1Score += 5;
+
         }
 
-        else {
-            Card playerBestTrump = findBestTrump(allTrumpsPlayer);
-            Card com1BestTrump = findBestTrump(allTrumpsCom1);
+        // only computer2 has a trump
+        else if(allTrumpsPlayer.isEmpty() && allTrumpsCom1.isEmpty()){
+            bestTrump = findBestTrump(allTrumpsCom2);
+            bestTrumpStr = "Computer P2 had best trump";
+            com2Score +=5;
 
-            ArrayList<Card> bothTrumps= new ArrayList<Card>();
+        }
 
-            bothTrumps.add(playerBestTrump);
-            bothTrumps.add(com1BestTrump);
+        // Each player has at least one trump
+        else if(!allTrumpsPlayer.isEmpty() && !allTrumpsCom1.isEmpty() && !allTrumpsCom2.isEmpty()){
 
-            bestTrump = findBestTrump(bothTrumps);
+            ArrayList<Card> eachBestTrump = new ArrayList<Card>();
 
+            eachBestTrump.add(findBestTrump(allTrumpsPlayer));
+            eachBestTrump.add(findBestTrump(allTrumpsCom1));
+            eachBestTrump.add(findBestTrump(allTrumpsCom2));
 
+            bestTrump = findBestTrump(eachBestTrump);
 
-            if(bestTrump.equals(playerBestTrump)){
+            if(bestTrump.equals(findBestTrump(allTrumpsPlayer))){
                 bestTrumpStr = "You had best Trump: ";
                 playersScore += 5;
 
             }
-            else if(bestTrump.equals(com1BestTrump)){
+
+            else if(bestTrump.equals(findBestTrump(allTrumpsCom1))){
                 bestTrumpStr = "Computer P1 had best trump: ";
                 com1Score +=5;
             }
 
+            else {
+                bestTrumpStr = "Computer P2 had best trump: ";
+                com2Score += 5;
+            }
+
         }
+
+        // only player and computer1 have trumps
+        else if(allTrumpsCom2.isEmpty()){
+            Card bestCardPlayer = findBestTrump(allTrumpsPlayer);
+            Card bestCardCom1 = findBestTrump(allTrumpsCom1);
+            bestTrump = getBetterTrump(bestCardPlayer, bestCardCom1);
+
+            if(bestTrump.equals(bestCardPlayer)){
+                bestTrumpStr = "You had best trump: ";
+                playersScore += 5;
+            }
+            else {
+                bestTrumpStr = "Computer P1 had best trump: ";
+                com1Score += 5;
+            }
+        }
+
+        // only player and computer2 have trumps
+        else if(allTrumpsCom1.isEmpty()){
+            Card bestCardPlayer = findBestTrump(allTrumpsPlayer);
+            Card bestCardCom2 = findBestTrump(allTrumpsCom2);
+            bestTrump = getBetterTrump(bestCardPlayer, bestCardCom2);
+
+            if(bestTrump.equals(bestCardPlayer)){
+                bestTrumpStr = "You had best trump: ";
+                playersScore += 5;
+            }
+            else {
+                bestTrumpStr = "Computer P2 had best trump: ";
+                com2Score += 5;
+            }
+
+        }
+
+
+        // only computer1 and computer2 have trumps
+        else{
+            Card bestCardCom1 = findBestTrump(allTrumpsCom1);
+            Card bestCardCom2 = findBestTrump(allTrumpsCom2);
+            bestTrump = getBetterTrump(bestCardCom1, bestCardCom2);
+
+            if(bestTrump.equals(bestCardCom1)){
+                bestTrumpStr = "Computer P1 had best trump: ";
+                com1Score += 5;
+            }
+            else {
+                bestTrumpStr = "Computer P2 had best trump: ";
+                com2Score += 5;
+            }
+        }
+
 
 
 
@@ -331,14 +575,66 @@ public class oldHand {
         return ( (theCard.getSuit() == upTrumpCard.getSuit()) || isAceOfHearts(theCard));
     }
 
+    private Card lowestHigherRankedTrump(Player thePlayer, Card theCard){
+        if (thePlayer.equals(computer1)) {
+
+
+            Card com1Trump = allTrumpsCom1.get(0);
+            Card betterTrump = getBetterTrump(com1Trump, theCard);
+            for(int i = 0; i < allTrumpsCom1.size(); i++){
+
+            }
+            if(betterTrump.equals(firstPlayed)){
+            }
+
+            return new Card();
+
+
+        }
+
+        else if(thePlayer.equals(computer2)){
+            return new Card();
+        }
+
+        else{
+            return null;
+        }
+    }
+
     private void updateTrickWon(Player wonTrickPlayer){
         if(wonTrickPlayer.equals(player)){
             playersScore += 5;
         }
-        else if(wonTrickPlayer.equals(computer1)){
-            com1Score +=5;
+        else if(wonTrickPlayer.equals(computer1)) {
+            com1Score += 5;
+        }
+        else if(wonTrickPlayer.equals(computer2)){
+            com2Score += 5;
 
         }
+    }
+
+    private void updateAllTrumps(){
+        ArrayList<Card> trumpsToCompare = new ArrayList<Card>();
+        trumpsToCompare.add(firstPlayed);
+        trumpsToCompare.add(secondPlayed);
+        trumpsToCompare.add(thirdPlayed);
+
+        Card winningCard = findBestTrump(trumpsToCompare);
+
+        if(firstPlayed.equals(winningCard)){
+            updateTrickWon(firstCardPlayer);
+        }
+        else if(secondPlayed.equals(winningCard)){
+            updateTrickWon(secondCardPlayer);
+        }
+        else if(thirdPlayed.equals(winningCard)){
+            updateTrickWon(thirdCardPlayer);
+        }
+        else {
+            Log.d("andyoc", "no winning card");
+        }
+
     }
 
     private Card getBetterTrump (Card firstCard, Card secondCard){
@@ -372,7 +668,9 @@ public class oldHand {
                     Arrays.asList(rankTrumps).indexOf(secondCard.getValue())){
                 return secondCard;
             }
-            else return firstCard;
+            else{
+                return firstCard;
+            }
         }
 
         else if(isAceOfHearts(secondCard)){
@@ -412,227 +710,87 @@ public class oldHand {
 
         for(int i=2; i<theCards.size(); i++){
             currentBest = getBetterTrump(currentBest,theCards.get(i));
+
         }
 
         return currentBest;
     }
 
-    private void updateBothSpades(){
-        if( (firstPlayed.getSuit() == Card.SPADES ) && ( secondPlayed.getSuit() == Card.SPADES) ){
 
-            // SEE http://stackoverflow.com/questions/6171663/how-to-find-index-of-int-array-in-java-from-a-given-value
-            if( (Arrays.asList(RANK_SPADES).indexOf(firstPlayed.getValue()))  <
-                    (java.util.Arrays.asList(RANK_SPADES).indexOf(secondPlayed.getValue() ))){
-                updateTrickWon(firstCardPlayer);
+    private Card getBetterOffSuit (Card firstCard, Card secondCard){
+        int suit = firstCard.getSuit();
 
-            }
-
-            else if( (Arrays.asList(RANK_SPADES).indexOf(secondPlayed.getValue()))  <
-                    (Arrays.asList(RANK_SPADES).indexOf(firstPlayed.getValue() ))){
-
-                updateTrickWon(secondCardPlayer);
-
-            }
+        Integer[] rankSuit;
+        if(suit == Card.DIAMONDS){
+            rankSuit = RANK_DIAMONDS;
         }
-    }
-
-    private void updateBothClubs(){
-        if( (firstPlayed.getSuit() == Card.CLUBS ) && ( secondPlayed.getSuit() == Card.CLUBS) ){
-
-            // SEE http://stackoverflow.com/questions/6171663/how-to-find-index-of-int-array-in-java-from-a-given-value
-            if( (Arrays.asList(RANK_CLUBS).indexOf(firstPlayed.getValue()))  <
-                    (Arrays.asList(RANK_CLUBS).indexOf(secondPlayed.getValue() ))){
-                updateTrickWon(firstCardPlayer);
-
-
-            }
-
-            else if( (Arrays.asList(RANK_CLUBS).indexOf(secondPlayed.getValue()))  <
-                    (Arrays.asList(RANK_CLUBS).indexOf(firstPlayed.getValue() ))){
-                updateTrickWon(secondCardPlayer);
-
-            }
+        else if(suit == Card.HEARTS){
+            rankSuit = RANK_HEARTS;
         }
-    }
-
-    private void updateBothDiamonds(){
-        if( (firstPlayed.getSuit() == Card.DIAMONDS ) && ( secondPlayed.getSuit() == Card.DIAMONDS) ){
-
-            // SEE http://stackoverflow.com/questions/6171663/how-to-find-index-of-int-array-in-java-from-a-given-value
-            if( (Arrays.asList(RANK_DIAMONDS).indexOf(firstPlayed.getValue()))  <
-                    (Arrays.asList(RANK_DIAMONDS).indexOf(secondPlayed.getValue() ))){
-                updateTrickWon(firstCardPlayer);
-            }
-
-            else if( (Arrays.asList(RANK_DIAMONDS).indexOf(secondPlayed.getValue()))  <
-                    (Arrays.asList(RANK_DIAMONDS).indexOf(firstPlayed.getValue() ))){
-
-                updateTrickWon(secondCardPlayer);
-
-            }
+        else if(suit == Card.CLUBS){
+            rankSuit = RANK_CLUBS;
         }
+        else{
+            rankSuit = RANK_SPADES;
+        }
+
+
+        if(Arrays.asList(rankSuit).indexOf(firstCard.getValue()) <
+                Arrays.asList(rankSuit).indexOf(secondCard.getValue())){
+            return firstCard;
+        }
+        else{
+            return secondCard;
+        }
+
+
+
     }
 
 
-    private void updateBothHearts(){
-        if( (firstPlayed.getSuit() == Card.HEARTS ) && ( secondPlayed.getSuit() == Card.HEARTS) ){
 
-            // SEE http://stackoverflow.com/questions/6171663/how-to-find-index-of-int-array-in-java-from-a-given-value
-            if( (Arrays.asList(RANK_HEARTS).indexOf(firstPlayed.getValue()))  <
-                    (Arrays.asList(RANK_HEARTS).indexOf(secondPlayed.getValue() ))){
+    private Card findBestOffSuit(ArrayList<Card> theCards){
+        if(theCards.size() == 1){
 
-                updateTrickWon(firstCardPlayer);
-            }
-
-            else if( (Arrays.asList(RANK_HEARTS).indexOf(secondPlayed.getValue()))  <
-                    (Arrays.asList(RANK_HEARTS).indexOf(firstPlayed.getValue() ))){
-
-                updateTrickWon(secondCardPlayer);
-
-            }
+            return theCards.get(0);
 
 
         }
-    }
 
-    // method to be finished
-    private void updateBothDiamondsTrumps(){
-        if( (firstPlayed.getSuit() == Card.DIAMONDS || isAceOfHearts(firstPlayed)) &&
-                ( secondPlayed.getSuit() == Card.DIAMONDS || isAceOfHearts(secondPlayed))){
+        Card currentBest = getBetterOffSuit(theCards.get(0), theCards.get(1));
 
-            if( isAceOfHearts(firstPlayed)){
-                if( Arrays.asList(RANK_TRUMPS_DIAMONDS).indexOf(Card.ACE) >
-                        Arrays.asList(RANK_TRUMPS_DIAMONDS).indexOf(secondPlayed.getValue())){
-                    updateTrickWon(secondCardPlayer);
-                }
-                else {
-                    updateTrickWon(firstCardPlayer);
-                }
-            }
-
-            else if(isAceOfHearts(secondPlayed)){
-
-                if( Arrays.asList(RANK_TRUMPS_DIAMONDS).indexOf(Card.ACE) >
-                        Arrays.asList(RANK_TRUMPS_DIAMONDS).indexOf(firstPlayed.getValue())){
-                    updateTrickWon(firstCardPlayer);
-                }
-                else {
-                    updateTrickWon(secondCardPlayer);
-                }
-
-            }
-
-            else{
-                if(Arrays.asList(RANK_TRUMPS_DIAMONDS).indexOf(firstPlayed.getValue()) <
-                        Arrays.asList(RANK_TRUMPS_DIAMONDS).indexOf(secondPlayed.getValue())){
-                    updateTrickWon(firstCardPlayer);
-                }
-                else{
-                    updateTrickWon(secondCardPlayer);
-                }
-
-            }
-
+        for(int i=2; i<theCards.size(); i++){
+            currentBest = getBetterOffSuit(currentBest, theCards.get(i));
 
         }
+
+        return currentBest;
     }
 
-    private void updateBothHeartsTrumps(){
-        if( (firstPlayed.getSuit() == Card.HEARTS && secondPlayed.getSuit() == Card.HEARTS) ){
+    private void updateAllSameOffSuit(){
+        ArrayList<Card> cardsToCompare = new ArrayList<Card>();
+        cardsToCompare.add(firstPlayed);
+        cardsToCompare.add(secondPlayed);
+        cardsToCompare.add(thirdPlayed);
 
-            if(Arrays.asList(RANK_TRUMPS_HEARTS).indexOf(firstPlayed.getValue()) <
-                    Arrays.asList(RANK_TRUMPS_HEARTS).indexOf(secondPlayed.getValue())){
-                updateTrickWon(firstCardPlayer);
-            }
-            else{
-                updateTrickWon(secondCardPlayer);
-            }
+        Card winningCard = findBestOffSuit(cardsToCompare);
 
+        if(firstPlayed.equals(winningCard)){
+            updateTrickWon(firstCardPlayer);
+        }
+        else if(secondPlayed.equals(winningCard)){
+            updateTrickWon(secondCardPlayer);
+        }
+        else if(thirdPlayed.equals(winningCard)){
+            updateTrickWon(thirdCardPlayer);
+        }
+        else {
+            Log.d("andyoc", "no winning card");
         }
 
     }
 
-    private void updateBothSpadesTrumps(){
-        if( (firstPlayed.getSuit() == Card.SPADES || isAceOfHearts(firstPlayed)) &&
-                ( secondPlayed.getSuit() == Card.SPADES || isAceOfHearts(secondPlayed))){
 
-            if( isAceOfHearts(firstPlayed)){
-                if( Arrays.asList(RANK_TRUMPS_SPADES).indexOf(Card.ACE) >
-                        Arrays.asList(RANK_TRUMPS_SPADES).indexOf(secondPlayed.getValue())){
-                    updateTrickWon(secondCardPlayer);
-                }
-                else {
-                    updateTrickWon(firstCardPlayer);
-                }
-            }
-
-            else if(isAceOfHearts(secondPlayed)){
-
-                if( Arrays.asList(RANK_TRUMPS_SPADES).indexOf(Card.ACE) >
-                        Arrays.asList(RANK_TRUMPS_SPADES).indexOf(firstPlayed.getValue())){
-                    updateTrickWon(firstCardPlayer);
-                }
-                else {
-                    updateTrickWon(secondCardPlayer);
-                }
-
-            }
-
-            else{
-                if(Arrays.asList(RANK_TRUMPS_SPADES).indexOf(firstPlayed.getValue()) <
-                        Arrays.asList(RANK_TRUMPS_SPADES).indexOf(secondPlayed.getValue())){
-                    updateTrickWon(firstCardPlayer);
-                }
-                else{
-                    updateTrickWon(secondCardPlayer);
-                }
-
-            }
-
-
-        }
-    }
-
-    private void updateBothClubsTrumps(){
-        if( (firstPlayed.getSuit() == Card.CLUBS || isAceOfHearts(firstPlayed)) &&
-                ( secondPlayed.getSuit() == Card.CLUBS || isAceOfHearts(secondPlayed))){
-
-            if( isAceOfHearts(firstPlayed)){
-                if( Arrays.asList(RANK_TRUMPS_CLUBS).indexOf(Card.ACE) >
-                        Arrays.asList(RANK_TRUMPS_CLUBS).indexOf(secondPlayed.getValue())){
-                    updateTrickWon(secondCardPlayer);
-                }
-                else {
-                    updateTrickWon(firstCardPlayer);
-                }
-            }
-
-            else if(isAceOfHearts(secondPlayed)){
-
-                if( Arrays.asList(RANK_TRUMPS_CLUBS).indexOf(Card.ACE) >
-                        Arrays.asList(RANK_TRUMPS_CLUBS).indexOf(firstPlayed.getValue())){
-                    updateTrickWon(firstCardPlayer);
-                }
-                else {
-                    updateTrickWon(secondCardPlayer);
-                }
-
-            }
-
-            else{
-                if(Arrays.asList(RANK_TRUMPS_CLUBS).indexOf(firstPlayed.getValue()) <
-                        Arrays.asList(RANK_TRUMPS_CLUBS).indexOf(secondPlayed.getValue())){
-                    updateTrickWon(firstCardPlayer);
-                }
-                else{
-                    updateTrickWon(secondCardPlayer);
-                }
-
-            }
-
-
-        }
-    }
 
 
 }

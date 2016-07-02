@@ -1,0 +1,56 @@
+http://stackoverflow.com/questions/8362640/java-selection-sort-algorithm
+http://stackoverflow.com/questions/5617175/arraylist-replace-element-if-exists-at-a-given-index
+
+
+
+computer player strategy
+
+if first player play your best trump
+
+if first player and you have no trumps
+   play highest ranked non-trump
+
+if second player
+   if trump played by first player
+      play lowest of your higher ranked trumps if you have one
+      else play your worst trump if you have any lower trumps
+      else play your lowerst ranked off suit
+
+   else if off suit card played by first player
+      play lowest of your higher ranked cards in the leading suit
+      else play your lowest ranked trump if you have a trump
+      else play you lowest ranked card in the suit of the leading card if you have one
+      else play your lowest ranked of your cards
+
+if third player
+   if trump first played
+       if second card is a trump
+           find highest ranked trump of first two cards      
+           play lowest of your higher ranked trumps if you have one
+           else play your worst trump if you have any lower trumps
+           else play your lowerst ranked off suit
+
+   else if off suit first card played
+      if second card played is trump
+         play lowest of your higher ranked trumps if you have one 
+         else play you lowest ranked card in the suit of the leading card if you have one
+         else play your lowest ranked card other suits
+      
+ else second card is same suit as leading card
+         find highest ranked between first and second played
+            play lowest of your higher ranked cards in the leading suit
+            else play your lowest ranked trump if you have a trump
+            else play you lowest ranked card in the suit of the leading card if you have one
+            else play your lowest ranked of your cards
+
+>>>>      else second card is non trump and different suit to leading card
+            play lowest of your higher ranked cards in the leading suit
+            else play your lowest ranked trump if you have a trump
+            else play you lowest ranked card in the suit of the leading card if you have one
+            else play your lowest ranked of your cards       
+
+
+
+
+
+
