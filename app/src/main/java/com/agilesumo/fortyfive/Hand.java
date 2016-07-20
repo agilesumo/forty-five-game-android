@@ -29,6 +29,8 @@ public class Hand {
 
     private Card thirdPlayed;
 
+    private Card bestTrumpCard = null;
+
 
     private Player firstCardPlayer;
 
@@ -37,6 +39,8 @@ public class Hand {
     private Player thirdCardPlayer;
 
     private Player aceTrumpsPlayer = null;
+
+    private Player bestTrumpPlayer = null;
 
     private int playersScore;
 
@@ -70,12 +74,15 @@ public class Hand {
 
     private Player lastTrickWinner = null;
 
+    private String bestTrumpStr;
 
-    public static Player player;
+    public static Player player = new Player();
 
-    public static Player computer1;
+    public static Player computer1 = new Player();
 
-    public static Player computer2;
+    public static Player computer2 = new Player();
+
+
 
 
 
@@ -126,6 +133,7 @@ public class Hand {
         deck.shuffle();
 
 
+
         for(int i=0; i<5; i++){
             playersCards[i] = deck.dealCard();
             com1Cards[i] = deck.dealCard();
@@ -134,34 +142,30 @@ public class Hand {
 
         upTrumpCard = deck.dealCard();
 
-        /*
+/*
         playersCards[0] = new Card(Card.QUEEN,Card.HEARTS);
-        playersCards[1] = new Card(Card.ACE, Card.DIAMONDS);
-        playersCards[2] = new Card(Card.JACK, Card.SPADES);
+        playersCards[1] = new Card(Card.ACE, Card.SPADES);
+        playersCards[2] = new Card(Card.JACK, Card.DIAMONDS);
         playersCards[3] = new Card(6, Card.DIAMONDS);
         playersCards[4] = new Card(Card.QUEEN, Card.DIAMONDS);
 
-        com1Cards[0] = new Card(4, Card.HEARTS);
-        com1Cards[1] = new Card(Card.JACK, Card.HEARTS);
-        com1Cards[2] = new Card(2, Card.CLUBS);
-        com1Cards[3] = new Card(7, Card.DIAMONDS);
-        com1Cards[4] = new Card(Card.QUEEN, Card.SPADES);
+        com1Cards[0] = new Card(4, Card.CLUBS);
+        com1Cards[1] = new Card(Card.JACK, Card.CLUBS);
+        com1Cards[2] = new Card(3, Card.DIAMONDS);
+        com1Cards[3] = new Card(Card.ACE, Card.DIAMONDS);
+        com1Cards[4] = new Card(3, Card.SPADES);
         //upTrumpCard = deck.dealCard();
 
-        com2Cards[0] = new Card(5, Card.HEARTS);
-        com2Cards[1] = new Card(6, Card.SPADES);
-        com2Cards[2] = new Card(3, Card.SPADES);
+        com2Cards[0] = new Card(7, Card.SPADES);
+        com2Cards[1] = new Card(5, Card.DIAMONDS);
+        com2Cards[2] = new Card(5, Card.SPADES);
         com2Cards[3] = new Card(4, Card.HEARTS);
-        com2Cards[4] = new Card(Card.KING, Card.HEARTS);
+        com2Cards[4] = new Card(Card.KING, Card.SPADES);
 
-        upTrumpCard = new Card(3,Card.CLUBS);
+        upTrumpCard = new Card(Card.QUEEN, Card.SPADES);
 
 */
 
-
-        player = new Player();
-        computer1 = new Player();
-        computer2 = new Player();
 
         firstCardPlayer = new Player();
         secondCardPlayer = new Player();
@@ -185,112 +189,82 @@ public class Hand {
         sortedHeartsCom2 = new ArrayList<Card>();
         sortedDiamondsCom2 = new ArrayList<Card>();
 
+        initialiseSortedLists();
 
-        for(int i = 0; i < 5; i++) {
-            if(isTrump(playersCards[i])) {
-                sortedTrumpsPlayer.add(playersCards[i]);
-            }
-        }
+        if(this.hasAceTrumps()){
 
-        for(int i = 0; i < 5; i++) {
-            if(isTrump(com1Cards[i])) {
-                sortedTrumpsCom1.add(com1Cards[i]);
-            }
+            if(aceTrumpsPlayer.equals(computer1)){
+                Card lowestCard = lowestRankedOffSuit(computer1);
 
-            else if(com1Cards[i].getSuit() == Card.SPADES){
-                sortedSpadesCom1.add(com1Cards[i]);
+                if (lowestCard == null){
+                    lowestCard = sortedTrumpsCom1.get(0);
+                }
 
-            }
+                for(int i=0; i<5; i++){
+                    if(com1Cards[i].equals(lowestCard)){
+                        com1Cards[i] = upTrumpCard;
+                    }
+                }
 
-            else if(com1Cards[i].getSuit() == Card.CLUBS){
-                sortedClubsCom1.add(com1Cards[i]);
-            }
+                // remove all from list so the lists can be updated
 
-            else if(com1Cards[i].getSuit() == Card.HEARTS){
-                sortedHeartsCom1.add(com1Cards[i]);
-            }
+                sortedTrumpsPlayer.clear();
 
-            else{
-                sortedDiamondsCom1.add(com1Cards[i]);
-            }
-        }
+                sortedTrumpsCom1.clear();
+                sortedDiamondsCom1.clear();
+                sortedHeartsCom1.clear();
+                sortedSpadesCom1.clear();
+                sortedClubsCom1.clear();
 
-        for(int i = 0; i < 5; i++) {
-            if(isTrump(com2Cards[i])) {
-                sortedTrumpsCom2.add(com2Cards[i]);
-            }
+                sortedTrumpsCom2.clear();
+                sortedDiamondsCom2.clear();
+                sortedHeartsCom2.clear();
+                sortedSpadesCom2.clear();
+                sortedClubsCom2.clear();
 
-            else if(com2Cards[i].getSuit() == Card.SPADES){
-                sortedSpadesCom2.add(com2Cards[i]);
+                initialiseSortedLists();
 
             }
 
-            else if(com2Cards[i].getSuit() == Card.CLUBS){
-                sortedClubsCom2.add(com2Cards[i]);
+            if(aceTrumpsPlayer.equals(computer2)){
+                Card lowestCard = lowestRankedOffSuit(computer2);
+
+                if (lowestCard == null){
+                    lowestCard = sortedTrumpsCom2.get(0);
+                }
+
+                for(int i=0; i<5; i++){
+                    if(com2Cards[i].equals(lowestCard)){
+                        com2Cards[i] = upTrumpCard;
+                    }
+                }
+
+                // remove all from list so the lists can be updated
+
+                sortedTrumpsPlayer.clear();
+
+                sortedTrumpsCom1.clear();
+                sortedDiamondsCom1.clear();
+                sortedHeartsCom1.clear();
+                sortedSpadesCom1.clear();
+                sortedClubsCom1.clear();
+
+                sortedTrumpsCom2.clear();
+                sortedDiamondsCom2.clear();
+                sortedHeartsCom2.clear();
+                sortedSpadesCom2.clear();
+                sortedClubsCom2.clear();
+
+
+
+                initialiseSortedLists();
+
+
             }
 
-            else if(com2Cards[i].getSuit() == Card.HEARTS){
-                sortedHeartsCom2.add(com2Cards[i]);
-            }
-
-            else{
-                sortedDiamondsCom2.add(com2Cards[i]);
-            }
         }
 
-        //sort all trumps lists
-        //see instance variables above for sorted trumps
-        //see notes 45 folder
-
-        if(!sortedTrumpsPlayer.isEmpty()){
-            sortTrumps(sortedTrumpsPlayer);
-
-        }
-
-        if(!sortedTrumpsCom1.isEmpty()){
-            sortTrumps(sortedTrumpsCom1);
-        }
-
-
-        if(!sortedTrumpsCom2.isEmpty()){
-            sortTrumps(sortedTrumpsCom2);
-        }
-
-        if(!sortedClubsCom1.isEmpty()){
-            sortOffSuit(sortedClubsCom1);
-        }
-
-        if(!sortedSpadesCom1.isEmpty()){
-            sortOffSuit(sortedSpadesCom1);
-        }
-
-        if(!sortedHeartsCom1.isEmpty()){
-            sortOffSuit(sortedHeartsCom1);
-        }
-
-        if(!sortedDiamondsCom1.isEmpty()){
-            sortOffSuit(sortedDiamondsCom1);
-        }
-
-        if(!sortedClubsCom2.isEmpty()){
-            sortOffSuit(sortedClubsCom2);
-        }
-
-        if(!sortedSpadesCom2.isEmpty()){
-            sortOffSuit(sortedSpadesCom2);
-        }
-
-        if(!sortedHeartsCom2.isEmpty()){
-            sortOffSuit(sortedHeartsCom2);
-        }
-
-        if(!sortedDiamondsCom2.isEmpty()){
-            sortOffSuit(sortedDiamondsCom2);
-        }
-
-
-
-
+        createBestTrumpStr();
 
 
     }
@@ -318,6 +292,83 @@ public class Hand {
 
     public void setTrumpCard(Card trumpCard) {
         upTrumpCard = trumpCard;
+    }
+
+    public Player getBestTrumpPlayer(){
+        return bestTrumpPlayer;
+    }
+
+    public void aceIsTrumpsUpdate(Player thePlayer){
+
+        if(thePlayer.equals(computer1)){
+            Card lowestCard = lowestRankedOffSuit(computer1);
+
+            if (lowestCard == null){
+                lowestCard = sortedTrumpsCom1.get(0);
+            }
+
+            for(int i=0; i<5; i++){
+                if(com1Cards[i].equals(lowestCard)){
+                    com1Cards[i] = upTrumpCard;
+                }
+            }
+
+            // remove all from list so the lists can be updated
+
+            sortedTrumpsPlayer.clear();
+
+            sortedTrumpsCom1.clear();
+            sortedDiamondsCom1.clear();
+            sortedHeartsCom1.clear();
+            sortedSpadesCom1.clear();
+            sortedClubsCom1.clear();
+
+            sortedTrumpsCom2.clear();
+            sortedDiamondsCom2.clear();
+            sortedHeartsCom2.clear();
+            sortedSpadesCom2.clear();
+            sortedClubsCom2.clear();
+
+            initialiseSortedLists();
+
+        }
+
+        if(thePlayer.equals(computer2)){
+            Card lowestCard = lowestRankedOffSuit(computer2);
+
+            if (lowestCard == null){
+                lowestCard = sortedTrumpsCom2.get(0);
+            }
+
+            for(int i=0; i<5; i++){
+                if(com2Cards[i].equals(lowestCard)){
+                    com2Cards[i] = upTrumpCard;
+                }
+            }
+
+            // remove all from list so the lists can be updated
+
+            sortedTrumpsPlayer.clear();
+
+            sortedTrumpsCom1.clear();
+            sortedDiamondsCom1.clear();
+            sortedHeartsCom1.clear();
+            sortedSpadesCom1.clear();
+            sortedClubsCom1.clear();
+
+            sortedTrumpsCom2.clear();
+            sortedDiamondsCom2.clear();
+            sortedHeartsCom2.clear();
+            sortedSpadesCom2.clear();
+            sortedClubsCom2.clear();
+
+
+
+            initialiseSortedLists();
+
+
+        }
+
     }
 
     public void setFirstPlayed(Card theFirstPlayed, Player thePlayer){
@@ -355,6 +406,19 @@ public class Hand {
 
     public void updatePlayerCard(Card card, int position){
         playersCards[position] = card;
+        sortedTrumpsCom1.clear();
+        sortedDiamondsCom1.clear();
+        sortedHeartsCom1.clear();
+        sortedSpadesCom1.clear();
+        sortedClubsCom1.clear();
+
+        sortedTrumpsCom2.clear();
+        sortedDiamondsCom2.clear();
+        sortedHeartsCom2.clear();
+        sortedSpadesCom2.clear();
+        sortedClubsCom2.clear();
+
+        initialiseSortedLists();
     }
 
     public boolean hasAceTrumps(){
@@ -385,6 +449,7 @@ public class Hand {
         return false;
     }
 
+
     public Player getAceTrumpsPlayer(){
         return aceTrumpsPlayer;
     }
@@ -392,6 +457,7 @@ public class Hand {
     public int getAceOfTrumpsPosition(){
         return aceOfTrumpsPosition;
     }
+
 
     public Card playFirstCard(Player thePlayer){
         if(thePlayer.equals(computer1)){
@@ -781,100 +847,127 @@ public class Hand {
         return playersScore + com1Score + com2Score == 25;
     }
 
-
-    /*
     public String getBestTrumpStr(){
 
-        Card bestTrump;
-        String bestTrumpStr = "";
+        bestTrumpStr = "";
 
 
-        if(allTrumpsPlayer.isEmpty() && allTrumpsCom1.isEmpty() && allTrumpsCom2.isEmpty()) {
-            return "No best trump as no trump in this hand";
+        if(bestTrumpPlayer == null) {
+            bestTrumpStr = "No best trump as no trump in this hand";
         }
 
         // only player has a trump
-        else if(allTrumpsCom1.isEmpty() && allTrumpsCom2.isEmpty()){
-            bestTrump = findBestTrump(allTrumpsPlayer);
+        else if(bestTrumpPlayer.equals(player)){
             bestTrumpStr = "You had the best trump: ";
             playersScore +=5;
 
         }
 
         // only computer1 has a trump
-        else if(allTrumpsPlayer.isEmpty() && allTrumpsCom2.isEmpty()){
-            bestTrump = findBestTrump(allTrumpsCom1);
+        else if(bestTrumpPlayer.equals(computer1)){
             bestTrumpStr = "Computer P1 had best trump: ";
             com1Score += 5;
 
         }
 
         // only computer2 has a trump
-        else if(allTrumpsPlayer.isEmpty() && allTrumpsCom1.isEmpty()){
-            bestTrump = findBestTrump(allTrumpsCom2);
-            bestTrumpStr = "Computer P2 had best trump";
+        else if(bestTrumpPlayer.equals(computer2)){
+            bestTrumpStr = "Computer P2 had best trump: ";
             com2Score +=5;
 
         }
 
+        if(bestTrumpCard != null){
+            bestTrumpStr += bestTrumpCard.toString();
+
+        }
+
+        return bestTrumpStr;
+    }
+
+    public void createBestTrumpStr(){
+
+        bestTrumpStr = "";
+        bestTrumpCard = null;
+
+
+        if(sortedTrumpsPlayer.isEmpty() && sortedTrumpsCom1.isEmpty() && sortedTrumpsCom2.isEmpty()) {
+            bestTrumpCard = null;
+            bestTrumpPlayer = null;
+        }
+
+        // only player has a trump
+        else if(sortedTrumpsCom1.isEmpty() && sortedTrumpsCom2.isEmpty()){
+            bestTrumpCard = findBestTrump(sortedTrumpsPlayer);
+            bestTrumpPlayer = player;
+        }
+
+        // only computer1 has a trump
+        else if(sortedTrumpsPlayer.isEmpty() && sortedTrumpsCom2.isEmpty()){
+            bestTrumpCard = findBestTrump(sortedTrumpsCom1);
+            bestTrumpPlayer = computer1;
+
+        }
+
+        // only computer2 has a trump
+        else if(sortedTrumpsPlayer.isEmpty() && sortedTrumpsCom1.isEmpty()){
+            bestTrumpCard = findBestTrump(sortedTrumpsCom2);
+            bestTrumpPlayer = computer2;
+
+        }
+
         // Each player has at least one trump
-        else if(!allTrumpsPlayer.isEmpty() && !allTrumpsCom1.isEmpty() && !allTrumpsCom2.isEmpty()){
+        else if(!sortedTrumpsPlayer.isEmpty() && !sortedTrumpsCom1.isEmpty() && !sortedTrumpsCom2.isEmpty()){
 
             ArrayList<Card> eachBestTrump = new ArrayList<Card>();
 
-            eachBestTrump.add(findBestTrump(allTrumpsPlayer));
-            eachBestTrump.add(findBestTrump(allTrumpsCom1));
-            eachBestTrump.add(findBestTrump(allTrumpsCom2));
+            eachBestTrump.add(findBestTrump(sortedTrumpsPlayer));
+            eachBestTrump.add(findBestTrump(sortedTrumpsCom1));
+            eachBestTrump.add(findBestTrump(sortedTrumpsCom2));
 
-            bestTrump = findBestTrump(eachBestTrump);
+            bestTrumpCard = findBestTrump(eachBestTrump);
 
-            if(bestTrump.equals(findBestTrump(allTrumpsPlayer))){
-                bestTrumpStr = "You had best Trump: ";
-                playersScore += 5;
+            if(bestTrumpCard.equals(findBestTrump(sortedTrumpsPlayer))){
+                bestTrumpPlayer = player;
 
             }
 
-            else if(bestTrump.equals(findBestTrump(allTrumpsCom1))){
-                bestTrumpStr = "Computer P1 had best trump: ";
-                com1Score +=5;
+            else if(bestTrumpCard.equals(findBestTrump(sortedTrumpsCom1))){
+                bestTrumpPlayer = computer1;
             }
 
             else {
-                bestTrumpStr = "Computer P2 had best trump: ";
-                com2Score += 5;
+                bestTrumpPlayer = computer2;
             }
 
         }
 
         // only player and computer1 have trumps
-        else if(allTrumpsCom2.isEmpty()){
-            Card bestCardPlayer = findBestTrump(allTrumpsPlayer);
-            Card bestCardCom1 = findBestTrump(allTrumpsCom1);
-            bestTrump = getBetterTrump(bestCardPlayer, bestCardCom1);
+        else if(sortedTrumpsCom2.isEmpty()){
+            Card bestCardPlayer = findBestTrump(sortedTrumpsPlayer);
+            Card bestCardCom1 = findBestTrump(sortedTrumpsCom1);
+            bestTrumpCard = getBetterTrump(bestCardPlayer, bestCardCom1);
 
-            if(bestTrump.equals(bestCardPlayer)){
-                bestTrumpStr = "You had best trump: ";
-                playersScore += 5;
+            if(bestTrumpCard.equals(bestCardPlayer)){
+                bestTrumpPlayer = player;
             }
+
             else {
-                bestTrumpStr = "Computer P1 had best trump: ";
-                com1Score += 5;
+                bestTrumpPlayer = computer1;
             }
         }
 
         // only player and computer2 have trumps
-        else if(allTrumpsCom1.isEmpty()){
-            Card bestCardPlayer = findBestTrump(allTrumpsPlayer);
-            Card bestCardCom2 = findBestTrump(allTrumpsCom2);
-            bestTrump = getBetterTrump(bestCardPlayer, bestCardCom2);
+        else if(sortedTrumpsCom1.isEmpty()){
+            Card bestCardPlayer = findBestTrump(sortedTrumpsPlayer);
+            Card bestCardCom2 = findBestTrump(sortedTrumpsCom2);
+            bestTrumpCard = getBetterTrump(bestCardPlayer, bestCardCom2);
 
-            if(bestTrump.equals(bestCardPlayer)){
-                bestTrumpStr = "You had best trump: ";
-                playersScore += 5;
+            if(bestTrumpCard.equals(bestCardPlayer)){
+                bestTrumpPlayer = player;
             }
             else {
-                bestTrumpStr = "Computer P2 had best trump: ";
-                com2Score += 5;
+                bestTrumpPlayer = computer2;
             }
 
         }
@@ -882,27 +975,46 @@ public class Hand {
 
         // only computer1 and computer2 have trumps
         else{
-            Card bestCardCom1 = findBestTrump(allTrumpsCom1);
-            Card bestCardCom2 = findBestTrump(allTrumpsCom2);
-            bestTrump = getBetterTrump(bestCardCom1, bestCardCom2);
+            Card bestCardCom1 = findBestTrump(sortedTrumpsCom1);
+            Card bestCardCom2 = findBestTrump(sortedTrumpsCom2);
+            bestTrumpCard = getBetterTrump(bestCardCom1, bestCardCom2);
 
-            if(bestTrump.equals(bestCardCom1)){
-                bestTrumpStr = "Computer P1 had best trump: ";
-                com1Score += 5;
+            if(bestTrumpCard.equals(bestCardCom1)){
+                bestTrumpPlayer = computer1;
             }
             else {
-                bestTrumpStr = "Computer P2 had best trump: ";
-                com2Score += 5;
+                bestTrumpPlayer = computer2;
             }
         }
 
+        if(bestTrumpPlayer != null) {
+
+            if (bestTrumpPlayer.equals(player)) {
+                sortedTrumpsPlayer.clear();
+
+                sortedTrumpsCom1.clear();
+                sortedDiamondsCom1.clear();
+                sortedHeartsCom1.clear();
+                sortedSpadesCom1.clear();
+                sortedClubsCom1.clear();
+
+                sortedTrumpsCom2.clear();
+                sortedDiamondsCom2.clear();
+                sortedHeartsCom2.clear();
+                sortedSpadesCom2.clear();
+                sortedClubsCom2.clear();
 
 
+                initialiseSortedLists();
+            }
 
-        return bestTrumpStr + bestTrump.toString();
+        }
+
+
     }
 
-*/
+
+
 
     //=======================================================================================
     // Helper Methods
@@ -1640,6 +1752,113 @@ public class Hand {
 
     }
 
+    private void initialiseSortedLists(){
+
+        for(int i = 0; i < 5; i++) {
+            if(isTrump(playersCards[i])) {
+                sortedTrumpsPlayer.add(playersCards[i]);
+            }
+        }
+
+        for(int i = 0; i < 5; i++) {
+            if(isTrump(com1Cards[i])) {
+                sortedTrumpsCom1.add(com1Cards[i]);
+            }
+
+            else if(com1Cards[i].getSuit() == Card.SPADES){
+                sortedSpadesCom1.add(com1Cards[i]);
+
+            }
+
+            else if(com1Cards[i].getSuit() == Card.CLUBS){
+                sortedClubsCom1.add(com1Cards[i]);
+            }
+
+            else if(com1Cards[i].getSuit() == Card.HEARTS){
+                sortedHeartsCom1.add(com1Cards[i]);
+            }
+
+            else{
+                sortedDiamondsCom1.add(com1Cards[i]);
+            }
+        }
+
+        for(int i = 0; i < 5; i++) {
+            if(isTrump(com2Cards[i])) {
+                sortedTrumpsCom2.add(com2Cards[i]);
+            }
+
+            else if(com2Cards[i].getSuit() == Card.SPADES){
+                sortedSpadesCom2.add(com2Cards[i]);
+
+            }
+
+            else if(com2Cards[i].getSuit() == Card.CLUBS){
+                sortedClubsCom2.add(com2Cards[i]);
+            }
+
+            else if(com2Cards[i].getSuit() == Card.HEARTS){
+                sortedHeartsCom2.add(com2Cards[i]);
+            }
+
+            else{
+                sortedDiamondsCom2.add(com2Cards[i]);
+            }
+        }
+
+        //sort all trumps lists
+        //see instance variables above for sorted trumps
+        //see notes 45 folder
+
+        if(!sortedTrumpsPlayer.isEmpty()){
+            sortTrumps(sortedTrumpsPlayer);
+
+        }
+
+        if(!sortedTrumpsCom1.isEmpty()){
+            sortTrumps(sortedTrumpsCom1);
+        }
+
+
+        if(!sortedTrumpsCom2.isEmpty()){
+            sortTrumps(sortedTrumpsCom2);
+        }
+
+        if(!sortedClubsCom1.isEmpty()){
+            sortOffSuit(sortedClubsCom1);
+        }
+
+        if(!sortedSpadesCom1.isEmpty()){
+            sortOffSuit(sortedSpadesCom1);
+        }
+
+        if(!sortedHeartsCom1.isEmpty()){
+            sortOffSuit(sortedHeartsCom1);
+        }
+
+        if(!sortedDiamondsCom1.isEmpty()){
+            sortOffSuit(sortedDiamondsCom1);
+        }
+
+        if(!sortedClubsCom2.isEmpty()){
+            sortOffSuit(sortedClubsCom2);
+        }
+
+        if(!sortedSpadesCom2.isEmpty()){
+            sortOffSuit(sortedSpadesCom2);
+        }
+
+        if(!sortedHeartsCom2.isEmpty()){
+            sortOffSuit(sortedHeartsCom2);
+        }
+
+        if(!sortedDiamondsCom2.isEmpty()){
+            sortOffSuit(sortedDiamondsCom2);
+        }
+
+
+    }
+
     private void removeCardFromLists(Card theCard, Player thePlayer){
 
         if(thePlayer.equals(computer1)) {
@@ -1726,8 +1945,6 @@ public class Hand {
             }
         }
     }
-
-
 
 
 }

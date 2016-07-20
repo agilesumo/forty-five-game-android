@@ -19,4 +19,16 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
+
+    public void rulesClicked(View view){
+        Intent intent = new Intent(this, RulesActivity.class);
+        startActivity(intent);
+
+    }
+
+    public void rankingsClicked(View view){
+        Intent intent = new Intent(this, RankingsActivity.class);
+        startActivity(intent);
+
+    }
 }

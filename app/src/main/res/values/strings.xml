@@ -1,3 +1,48 @@
 <resources>
     <string name="app_name">Forty Five</string>
+
+    <string name="rankings">
+    Cards are valued in the following order, depending on trump suit, where A♥ is the Ace of Hearts. If no trump card is played during the trick, the value is awarded according to the off-suit rules listed below. In the absence of a trump card, the winning suit is always the suit led. The rank of cards depends on a number of factors, the foremost being what suit is trump. A basic way it is commonly thought of is "red is high, black is low."
+    \n\n
+        trump Diamonds: 5, J, A♥, A, K, Q, 10, 9, 8, 7, 6, 4, 3, 2\n
+        trump Hearts: 5, J, A, K, Q, 10, 9, 8, 7, 6, 4, 3, 2\n
+        trump Clubs: 5, J, A♥, A, K, Q, 2, 3, 4, 6, 7, 8, 9, 10\n
+        trump Spades: 5, J, A♥, A, K, Q, 2, 3, 4, 6, 7, 8, 9, 10\n
+        Off-suit diamonds: K, Q, J, 10, 9, 8, 7, 6, 5, 4, 3, 2, A\n
+        Off-suit hearts: K, Q, J, 10, 9, 8, 7, 6, 5, 4, 3, 2\n
+        Off-suit clubs: K, Q, J, A, 2, 3, 4, 5, 6, 7, 8, 9, 10\n
+        Off-suit spades: K, Q, J, A, 2, 3, 4, 5, 6, 7, 8, 9, 10\n
+    </string>
+
+    <string name="rules">
+        General game play for Traditional Forty Fives - 45 point: \n\n
+
+        The game is played with a regular deck of 52 cards. Jokers are not used.\n\n
+
+        The top card of the deck is turned face up. The card that is shown determines the trump suit and that card is left on top of the deck. If an ace is turned up, that is the trump suit but the dealer must immediately claim the ace by discarding one of his dealt cards.\n\n
+
+        If any of the players is dealt the ace of the trump suit, then he may claim the card that was turned up by discarding one of his other cards. This must be done before he plays his first card.\n\n
+
+        Each round, where every player plays a card, is called a trick.\n\n
+
+        One card is played by each player, in turn, starting with the player to the left of the dealer. The winner of the trick is determined by who played the highest card. The winner gets five points (on his way to 45). A bonus trick worth ten points rather than five points is awarded for the best card played during the round. This is determined at the end of the round.\n\n
+
+        Players must always follow the suit of the leading card.\n\n
+
+        The leading card can only be bettered with a better card in the same suit or with a trump.\n\n
+
+        Any trump suit card beats every non-trump suit card.\n\n
+
+        The only time in which a player may choose not to follow trump suit is when the only trump card he has is the five, jack or ace of hearts or if he does not have any cards of the trump suit.The action of holding a card in this fashion is known as reneging.\n\n
+
+        If the ace of hearts is led, players must always play a trump card to follow suit. If they have no trump (and trump is not hearts) they must play a heart if there is one in hand. If they have no trump or heart they may play any other card.\n\n
+
+        Points are added up based on tricks won and the bonus trick at the end of the round. If a player reached 45 points or more (including points earned in previous rounds), that player wins. If more than one player reaches at least 45 points in the same round, the player with more points is the winner. If no player reaches 45 points, the deal is given to the player to the left of the last dealer and a new round begins.\n\n
+
+        If it happens that all players have no trump, hence no best trump then the score after a round will only add up to 25.\n\n
+
+
+    </string>
+
+
 </resources>

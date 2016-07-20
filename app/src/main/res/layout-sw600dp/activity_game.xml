@@ -17,16 +17,16 @@
         <ImageView
 
             android:id="@+id/first_card_computer1"
-            android:layout_width="50dp"
-            android:layout_height="72dp"
+            android:layout_width="100dp"
+            android:layout_height="144dp"
             android:layout_marginRight="5dp"
             android:src="@drawable/back_card_red_100_145"
 
             />
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="72dp"
+            android:layout_width="100dp"
+            android:layout_height="144dp"
             android:id="@+id/second_card_computer1"
             android:layout_marginRight="5dp"
             android:src="@drawable/back_card_red_100_145"
@@ -36,8 +36,8 @@
             />
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="72dp"
+            android:layout_width="100dp"
+            android:layout_height="144dp"
             android:id="@+id/third_card_computer1"
             android:layout_marginRight="5dp"
             android:src="@drawable/back_card_red_100_145"
@@ -46,8 +46,8 @@
             />
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="72dp"
+            android:layout_width="100dp"
+            android:layout_height="144dp"
             android:id="@+id/fourth_card_computer1"
             android:layout_marginRight="5dp"
             android:src="@drawable/back_card_red_100_145"
@@ -56,8 +56,8 @@
             />
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="72dp"
+            android:layout_width="100dp"
+            android:layout_height="144dp"
             android:id="@+id/fifth_card_computer1"
             android:src="@drawable/back_card_red_100_145"
 
@@ -80,7 +80,7 @@
             android:id="@+id/computer1_score_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             android:text="COM P1 > Hand: o"
             android:paddingLeft="@dimen/activity_horizontal_margin"/>
@@ -89,7 +89,7 @@
             android:id="@+id/computer1_total_score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             android:text="Total: 0"
             android:paddingLeft="@dimen/activity_horizontal_margin"/>
@@ -98,7 +98,7 @@
             android:id="@+id/computer1_dealer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             android:background="@color/green"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"/>
@@ -117,16 +117,16 @@
         <ImageView
 
             android:id="@+id/first_card_computer2"
-            android:layout_width="50dp"
-            android:layout_height="72dp"
+            android:layout_width="100dp"
+            android:layout_height="144dp"
             android:layout_marginRight="5dp"
             android:src="@drawable/back_card_red_100_145"
 
             />
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="72dp"
+            android:layout_width="100dp"
+            android:layout_height="144dp"
             android:id="@+id/second_card_computer2"
             android:layout_marginRight="5dp"
             android:src="@drawable/back_card_red_100_145"
@@ -136,8 +136,8 @@
             />
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="72dp"
+            android:layout_width="100dp"
+            android:layout_height="144dp"
             android:id="@+id/third_card_computer2"
             android:layout_marginRight="5dp"
             android:src="@drawable/back_card_red_100_145"
@@ -146,8 +146,8 @@
             />
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="72dp"
+            android:layout_width="100dp"
+            android:layout_height="144dp"
             android:id="@+id/fourth_card_computer2"
             android:layout_marginRight="5dp"
             android:src="@drawable/back_card_red_100_145"
@@ -156,8 +156,8 @@
             />
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="72dp"
+            android:layout_width="100dp"
+            android:layout_height="144dp"
             android:id="@+id/fifth_card_computer2"
             android:src="@drawable/back_card_red_100_145"
 
@@ -179,7 +179,7 @@
             android:id="@+id/computer2_score_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             android:text="COM P2 > Hand: 0"
             android:paddingLeft="@dimen/activity_horizontal_margin"/>
@@ -188,7 +188,7 @@
             android:id="@+id/computer2_total_score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             android:text="Total: 0"
             android:paddingLeft="@dimen/activity_horizontal_margin"/>
@@ -197,7 +197,7 @@
             android:id="@+id/computer2_dealer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             android:text="Dealer"
             android:background="@color/green"
@@ -212,7 +212,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_horizontal"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="24dp"
         android:layout_below="@+id/com2_info"
         >
 
@@ -228,16 +228,16 @@
                 android:id="@+id/turmp_card_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 android:text="Trumps"
                 />
 
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="72dp"
+                android:layout_width="100dp"
+                android:layout_height="144dp"
                 android:id="@+id/up_trump_card"
-            />
+                />
 
 
 
@@ -246,8 +246,8 @@
         <ImageView
 
             android:id="@+id/first_card_played"
-            android:layout_width="50dp"
-            android:layout_height="72dp"
+            android:layout_width="100dp"
+            android:layout_height="144dp"
             android:layout_marginRight="5dp"
 
             />
@@ -255,8 +255,8 @@
         <ImageView
 
             android:id="@+id/second_card_played"
-            android:layout_width="50dp"
-            android:layout_height="72dp"
+            android:layout_width="100dp"
+            android:layout_height="144dp"
             android:layout_marginRight="5dp"
 
             />
@@ -264,8 +264,8 @@
         <ImageView
 
             android:id="@+id/third_card_played"
-            android:layout_width="50dp"
-            android:layout_height="72dp"
+            android:layout_width="100dp"
+            android:layout_height="144dp"
             android:layout_marginRight="5dp"
 
             />
@@ -284,7 +284,7 @@
             android:id="@+id/player_score_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             android:text="Player > Hand: 0"
             android:paddingLeft="@dimen/activity_horizontal_margin"/>
@@ -293,7 +293,7 @@
             android:id="@+id/player_total_score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             android:text="Total: 0"
             android:paddingLeft="@dimen/activity_horizontal_margin"/>
@@ -302,7 +302,7 @@
             android:id="@+id/player_dealer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             android:background="@color/green"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"/>
@@ -321,23 +321,23 @@
         <ImageView
 
             android:id="@+id/first_card_player"
-            android:layout_width="50dp"
-            android:layout_height="72dp"
+            android:layout_width="100dp"
+            android:layout_height="144dp"
             android:layout_marginRight="5dp"
             android:onClick="playerCardClicked"
 
             />
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="72dp"
+            android:layout_width="100dp"
+            android:layout_height="144dp"
             android:id="@+id/second_card_player"
             android:layout_marginRight="5dp"
             android:onClick="playerCardClicked"
             />
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="72dp"
+            android:layout_width="100dp"
+            android:layout_height="144dp"
             android:id="@+id/third_card_player"
             android:layout_marginRight="5dp"
             android:onClick="playerCardClicked"
@@ -345,8 +345,8 @@
             />
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="72dp"
+            android:layout_width="100dp"
+            android:layout_height="144dp"
             android:id="@+id/fourth_card_player"
             android:layout_marginRight="5dp"
             android:onClick="playerCardClicked"
@@ -354,8 +354,8 @@
             />
 
         <ImageView
-            android:layout_width="50dp"
-            android:layout_height="72dp"
+            android:layout_width="100dp"
+            android:layout_height="144dp"
             android:id="@+id/fifth_card_player"
             android:onClick="playerCardClicked"
 
