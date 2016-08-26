@@ -142,9 +142,11 @@ public class Hand {
 
         upTrumpCard = deck.dealCard();
 
-/*
-        playersCards[0] = new Card(Card.QUEEN,Card.HEARTS);
-        playersCards[1] = new Card(Card.ACE, Card.SPADES);
+        /*
+
+
+        playersCards[0] = new Card(7,Card.DIAMONDS);
+        playersCards[1] = new Card(Card.ACE, Card.CLUBS);
         playersCards[2] = new Card(Card.JACK, Card.DIAMONDS);
         playersCards[3] = new Card(6, Card.DIAMONDS);
         playersCards[4] = new Card(Card.QUEEN, Card.DIAMONDS);
@@ -153,18 +155,20 @@ public class Hand {
         com1Cards[1] = new Card(Card.JACK, Card.CLUBS);
         com1Cards[2] = new Card(3, Card.DIAMONDS);
         com1Cards[3] = new Card(Card.ACE, Card.DIAMONDS);
-        com1Cards[4] = new Card(3, Card.SPADES);
+        com1Cards[4] = new Card(3, Card.CLUBS);
         //upTrumpCard = deck.dealCard();
 
-        com2Cards[0] = new Card(7, Card.SPADES);
+        com2Cards[0] = new Card(7, Card.HEARTS);
         com2Cards[1] = new Card(5, Card.DIAMONDS);
-        com2Cards[2] = new Card(5, Card.SPADES);
-        com2Cards[3] = new Card(4, Card.HEARTS);
-        com2Cards[4] = new Card(Card.KING, Card.SPADES);
+        com2Cards[2] = new Card(5, Card.DIAMONDS);
+        com2Cards[3] = new Card(4, Card.DIAMONDS);
+        com2Cards[4] = new Card(Card.KING, Card.CLUBS);
 
-        upTrumpCard = new Card(Card.QUEEN, Card.SPADES);
+        upTrumpCard = new Card(Card.ACE, Card.HEARTS);
 
-*/
+        */
+
+
 
 
         firstCardPlayer = new Player();
@@ -366,8 +370,10 @@ public class Hand {
 
             initialiseSortedLists();
 
-
         }
+
+        createBestTrumpStr();
+
 
     }
 

@@ -25,6 +25,9 @@ import java.util.Arrays;
 
 public class GameActivity extends AppCompatActivity {
 
+    //version 2
+
+
     private Hand currentHand;
 
     private Card firstCardCom2;
@@ -141,6 +144,7 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
@@ -422,8 +426,9 @@ public class GameActivity extends AppCompatActivity {
         if(upTrumpCard.getValue() == Card.ACE){
             Player dealer = game.getDealer();
             isAceUpTrumpCard = true;
-            if(dealer.equals(Hand.computer1) || dealer.equals(Hand.computer2))
-            currentHand.aceIsTrumpsUpdate(dealer);
+            if(dealer.equals(Hand.computer1) || dealer.equals(Hand.computer2)) {
+                currentHand.aceIsTrumpsUpdate(dealer);
+            }
         }
 
         upTrumpCardImage.setImageResource(upTrumpCard.getCardImageId());
@@ -687,7 +692,9 @@ public class GameActivity extends AppCompatActivity {
                     scoreTextCom1.setText("COM P1 > Hand: " + currentHand.getScore(Hand.computer1));
                     scoreTextCom2.setText("COM P2 > Hand: " + currentHand.getScore(Hand.computer2));
 
-                    game.addToScore(currentHand.getBestTrumpPlayer());
+                    if(currentHand.getBestTrumpPlayer() != null) {
+                        game.addToScore(currentHand.getBestTrumpPlayer());
+                    }
                     totalScorePlayerText.setText("Total: " + game.getTotalScore(Hand.player));
                     totalScoreCom1Text.setText("Total: " + game.getTotalScore(Hand.computer1));
                     totalScoreCom2Text.setText("Total: " + game.getTotalScore(Hand.computer2));
